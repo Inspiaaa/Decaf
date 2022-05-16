@@ -38,23 +38,38 @@ public class SpriteRenderer extends Component implements IUpdatable, IDrawable {
         g.drawRect((int)pos2.x, (int)pos2.y, size, size);
 
         Camera cam = Camera.main();
-        Vector2 pos = transform.getPosition();
+        Vector2 worldPos = transform.getPosition();
+        float rotation = transform.getRotation();
+        Vector2 scale = transform.getScale();
+
         // pos.x = Time.time() * 5 % 4;
         transform.setRotation(Time.time() * 5);
+        transform.setScale(new Vector2(2, 1));
 
         Rectangle worldBounds = sprite.getWorldBounds();
 
         AffineTransform tx = new AffineTransform();
+
         float pixelsPerUnit = cam.getZoom() * cam.getPixelsPerUnit();
         // Move the (0, 0) point for drawing to the correct position on the texture.
         tx.translate(
-                pixelsPerUnit * (pos.x - cam.getPosition().x + worldBounds.getLeft()),
-                pixelsPerUnit * (pos.y - cam.getPosition().y) + worldBounds.getTop());
-        // Rotate the image around its origin.
-        tx.rotate(
-                transform.getRotation(),
+                pixelsPerUnit * (worldPos.x - cam.getPosition().x + worldBounds.getLeft()),
+                pixelsPerUnit * (worldPos.y - cam.getPosition().y + worldBounds.getTop()));
+
+        // Make the origin the center
+        tx.translate(
                 -worldBounds.getLeft() * pixelsPerUnit,
                 -worldBounds.getTop() * pixelsPerUnit);
+
+        // Rotate the image around its origin.
+        tx.rotate(transform.getRotation());
+        tx.scale(scale.x, scale.y);
+
+        // Move it by its origin again
+        tx.translate(
+                worldBounds.getLeft() * pixelsPerUnit,
+                worldBounds.getTop() * pixelsPerUnit);
+
         // Scale the drawing context so that the width (height) of the sprite matches
         // the correct amount of pixels on the screen.
         float scalingFactorForWidth = pixelsPerUnit / sprite.getPixelsPerUnit();

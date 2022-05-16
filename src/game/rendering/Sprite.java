@@ -10,11 +10,11 @@ import java.io.IOException;
 
 public class Sprite {
     public static final Vector2 ORIGIN_CENTER = new Vector2(0.5f, 0.5f);
+    public static final Vector2 ORIGIN_BOTTOM_CENTER = new Vector2(0.5f, 1f);
 
     private BufferedImage texture;
     private float pixelsPerUnit;
     private Vector2 origin;
-
 
     private static BufferedImage readImage(String filepath) {
         try {
