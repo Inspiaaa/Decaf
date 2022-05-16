@@ -1,5 +1,6 @@
 package game.rendering;
 
+import game.maths.Rectangle;
 import game.maths.Vector2;
 
 import javax.imageio.ImageIO;
@@ -8,11 +9,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class Sprite {
+    public static final Vector2 ORIGIN_CENTER = new Vector2(0.5f, 0.5f);
+
     private BufferedImage texture;
     private float pixelsPerUnit;
     private Vector2 origin;
 
-    public static final Vector2 ORIGIN_CENTER = new Vector2(0.5f, 0.5f);
 
     private static BufferedImage readImage(String filepath) {
         try {
@@ -45,6 +47,18 @@ public class Sprite {
 
     public float getPixelsPerUnit() {
         return pixelsPerUnit;
+    }
+
+    public Rectangle getWorldBounds() {
+        float widthInWorldUnits = texture.getWidth() / pixelsPerUnit;
+        float heightInWorldUnits = texture.getHeight() / pixelsPerUnit;
+
+        return new Rectangle(
+                -widthInWorldUnits * origin.x,
+                -heightInWorldUnits * origin.y,
+                widthInWorldUnits,
+                heightInWorldUnits
+        );
     }
 
     public Vector2 getOrigin() {

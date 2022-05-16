@@ -8,6 +8,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Camera {
+    public static final AffineTransform IDENTITY_TX = new AffineTransform();
     private static Camera main;
 
     // Low resolution texture for drawing the pixel art,
@@ -30,9 +31,6 @@ public class Camera {
     private AffineTransform drawToScreenTransform;
 
     public Camera(float pixelsPerUnit, float targetWorldSize, int startWidth, int startHeight) {
-        // TODO: Make method "markAsMain()"
-        main = this;
-
         this.pixelsPerUnit = pixelsPerUnit;
         this.targetWorldSize = targetWorldSize;
         this.zoom = 1;
@@ -40,6 +38,10 @@ public class Camera {
         this.backgroundColor = Color.WHITE;
 
         updateTextures(startWidth, startHeight);
+    }
+
+    public void markAsMain() {
+        main = this;
     }
 
     public void onResize(int width, int height) {
@@ -72,6 +74,7 @@ public class Camera {
 
     public void preUpdate() {
         // Clear the screen
+        drawGraphics.setTransform(IDENTITY_TX);
         drawGraphics.setColor(backgroundColor);
         drawGraphics.fillRect(0, 0, drawTexture.getWidth(), drawTexture.getHeight());
     }
@@ -96,9 +99,18 @@ public class Camera {
         updateTransforms();
     }
 
+    public Vector2 getPosition() {
+        // TODO: Copy this instance?
+        return this.position;
+    }
+
     public void setZoom(float zoom) {
         this.zoom = zoom;
         updateTransforms();
+    }
+
+    public float getZoom() {
+        return zoom;
     }
 
     public AffineTransform getWorldToDrawTransform() {
@@ -127,6 +139,10 @@ public class Camera {
 
     public void setBackgroundColor(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    public float getPixelsPerUnit() {
+        return pixelsPerUnit;
     }
 
     public static Camera main() {

@@ -3,7 +3,8 @@
     #- Update the screen with this texture
     #- Resizing
     - Smooth scrolling
-- Make GamePanel the scene manager
+- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
+- Call start (component) at the beginning of the next frame and not directly
 - Collision engine
 - Rendering with SpriteRenderer
     - Scaling

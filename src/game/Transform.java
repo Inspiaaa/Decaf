@@ -12,6 +12,11 @@ public class Transform extends Component {
         this.rotation = 0;
     }
 
+    public Transform(Vector2 position) {
+        this.position = position;
+        this.rotation = 0;
+    }
+
     public Vector2 getPosition() {
         return position;
     }

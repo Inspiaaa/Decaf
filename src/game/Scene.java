@@ -3,6 +3,7 @@ package game;
 import game.core.GameObject;
 import game.events.IDrawable;
 import game.events.IUpdatable;
+import game.maths.Vector2;
 import game.rendering.Sprite;
 
 import java.awt.image.BufferedImage;
@@ -24,10 +25,12 @@ public class Scene implements IScene {
 
     @Override
     public void start(int width, int height) {
-        this.camera = new Camera(pixelsPerUnit, cameraSize, width, height);
+        camera = new Camera(pixelsPerUnit, cameraSize, width, height);
+        camera.markAsMain();
 
         GameObject go = new GameObject(this);
-        go.addComponent(new SpriteRenderer(new Sprite("./Player.png", 16)));
+        go.addComponent(new Transform(new Vector2(1, 2)));
+        go.addComponent(new SpriteRenderer(new Sprite("./Player.png", 16, new Vector2(0.5f, 1))));
     }
 
     public void update() {
