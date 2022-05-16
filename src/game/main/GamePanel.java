@@ -34,8 +34,22 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void run() {
         Time timeManager = Time.getInstance();
+        int width = getWidth();
+        int height = getHeight();
 
         while (isRunning) {
+            int newWidth = getWidth();
+            int newHeight = getHeight();
+
+            // Although using a Listener would be more efficient, this polling based
+            // solution for checking whether the screen has resized saves any
+            // synchronisation hassles between the UI thread and the game thread.
+            if (newWidth != width || newHeight != height) {
+                activeScene.onResize(newWidth, newHeight);
+                width = newWidth;
+                height = newHeight;
+            }
+
             timeManager.update();
 
             try {

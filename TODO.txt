@@ -1,6 +1,8 @@
 - Camera
-    - Draw to the screen texture
-    - Update the screen with this texture
+    #- Draw to the screen texture
+    #- Update the screen with this texture
+    #- Resizing
+    - Smooth scrolling
 - Make GamePanel the scene manager
 - Collision engine
 - Rendering with SpriteRenderer

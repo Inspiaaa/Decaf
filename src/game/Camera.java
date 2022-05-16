@@ -70,16 +70,6 @@ public class Camera {
         drawToScreenTransform.scale(scalingFactor, scalingFactor);
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
-        updateTransforms();
-    }
-
-    public void setZoom(float zoom) {
-        this.zoom = zoom;
-        updateTransforms();
-    }
-
     public void preUpdate() {
         // Clear the screen
         drawGraphics.setColor(backgroundColor);
@@ -88,7 +78,7 @@ public class Camera {
 
     public void postUpdate() {
         // Copy the drawTexture to the screenTexture
-        // screenGraphics.setTransform(drawToScreenTransform);
+        screenGraphics.setTransform(drawToScreenTransform);
         screenGraphics.drawImage(drawTexture, 0, 0, null);
     }
 
@@ -99,6 +89,16 @@ public class Camera {
 
     public float worldToDrawLength(float lengthInWorld) {
         return lengthInWorld * (float)worldToDrawTransform.getScaleX();
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+        updateTransforms();
+    }
+
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
+        updateTransforms();
     }
 
     public AffineTransform getWorldToDrawTransform() {
