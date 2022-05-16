@@ -1,0 +1,11 @@
+- Camera
+    - Draw to the screen texture
+    - Update the screen with this texture
+- Make GamePanel the scene manager
+- Collision engine
+- Rendering with SpriteRenderer
+    - Scaling
+    - Rotation
+- Keyboard Handler
+- Mouse Handler
+#- Time (.deltaTime, .time, ...)
