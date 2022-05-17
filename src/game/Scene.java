@@ -4,7 +4,9 @@ import game.core.GameObject;
 import game.events.IDrawable;
 import game.events.IUpdatable;
 import game.maths.Vector2;
+import game.rendering.Camera;
 import game.rendering.Sprite;
+import game.rendering.SpriteRenderer;
 
 import java.awt.image.BufferedImage;
 import java.util.HashSet;

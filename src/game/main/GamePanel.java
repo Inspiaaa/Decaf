@@ -1,8 +1,6 @@
 package game.main;
 
-import game.Camera;
 import game.IScene;
-import game.Scene;
 import game.Time;
 
 import javax.swing.*;

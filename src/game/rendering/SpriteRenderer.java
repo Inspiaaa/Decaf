@@ -1,15 +1,15 @@
-package game;
+package game.rendering;
 
+import game.Time;
+import game.Transform;
 import game.core.Component;
 import game.events.IDrawable;
 import game.events.IUpdatable;
 import game.maths.Rectangle;
 import game.maths.Vector2;
-import game.rendering.Sprite;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 public class SpriteRenderer extends Component implements IUpdatable, IDrawable {
     private Sprite sprite;
@@ -33,7 +33,7 @@ public class SpriteRenderer extends Component implements IUpdatable, IDrawable {
         g.setTransform(Camera.IDENTITY_TX);
         g.setColor(new Color(255, 0, 0));
         // g.drawRect(5, 5, 20, 10);
-        Vector2 pos2 = Camera.main().worldToDrawPos(new Vector2(1, (int)Time.time() % 5));
+        Vector2 pos2 = Camera.main().worldToDrawPos(new Vector2(1, (int) Time.time() % 5));
         int size = (int)Camera.main().worldToDrawLength(1);
         g.drawRect((int)pos2.x, (int)pos2.y, size, size);
 
@@ -43,8 +43,8 @@ public class SpriteRenderer extends Component implements IUpdatable, IDrawable {
         Vector2 scale = transform.getScale();
 
         // pos.x = Time.time() * 5 % 4;
-        transform.setRotation(Time.time() * 5);
-        transform.setScale(new Vector2(2, 1));
+        transform.setRotation(Time.time() * 1);
+        transform.setScale(new Vector2(1, 1));
 
         Rectangle worldBounds = sprite.getWorldBounds();
 
@@ -56,7 +56,7 @@ public class SpriteRenderer extends Component implements IUpdatable, IDrawable {
                 pixelsPerUnit * (worldPos.x - cam.getPosition().x + worldBounds.getLeft()),
                 pixelsPerUnit * (worldPos.y - cam.getPosition().y + worldBounds.getTop()));
 
-        // Make the origin the center
+        // Subtract the origin, so that the sprite can be scaled and rotated around the origin.
         tx.translate(
                 -worldBounds.getLeft() * pixelsPerUnit,
                 -worldBounds.getTop() * pixelsPerUnit);

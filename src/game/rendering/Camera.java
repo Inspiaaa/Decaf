@@ -1,4 +1,4 @@
-package game;
+package game.rendering;
 
 import game.maths.Vector2;
 

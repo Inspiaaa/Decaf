@@ -1,7 +1,6 @@
 package game.main;
 
 import game.Scene;
-import game.SpriteRenderer;
 import game.core.GameObject;
 
 import javax.swing.*;
