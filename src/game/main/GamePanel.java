@@ -2,6 +2,7 @@ package game.main;
 
 import game.IScene;
 import game.Time;
+import game.input.Keyboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,13 +19,15 @@ public class GamePanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(800, 500));
         setBackground(Color.WHITE);
         setDoubleBuffered(true);
+        setFocusable(true);
+        requestFocus();
+        addKeyListener(Keyboard.getListener());
     }
 
     public void startGame(IScene scene) {
         activeScene = scene;
         scene.start(getWidth(), getHeight());
         isRunning = true;
-
 
         gameThread = new Thread(this);
         gameThread.start();

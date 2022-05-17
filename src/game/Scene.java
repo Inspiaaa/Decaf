@@ -3,11 +3,13 @@ package game;
 import game.core.GameObject;
 import game.events.IDrawable;
 import game.events.IUpdatable;
+import game.input.Keyboard;
 import game.maths.Vector2;
 import game.rendering.Camera;
 import game.rendering.Sprite;
 import game.rendering.SpriteRenderer;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 
@@ -36,6 +38,7 @@ public class Scene implements IScene {
     }
 
     public void update() {
+        Keyboard.update();
         camera.preUpdate();
 
         for (IUpdatable updatable : objectsToUpdate) {
@@ -52,6 +55,7 @@ public class Scene implements IScene {
         }
 
         camera.postUpdate();
+        System.out.println(Keyboard.isKeyDown(KeyEvent.VK_W));
     }
 
     @Override
