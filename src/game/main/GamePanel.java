@@ -3,6 +3,7 @@ package game.main;
 import game.IScene;
 import game.Time;
 import game.input.Keyboard;
+import game.input.Mouse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +20,13 @@ public class GamePanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(800, 500));
         setBackground(Color.WHITE);
         setDoubleBuffered(true);
+
         setFocusable(true);
         requestFocus();
+
+        Mouse.setup(this);
         addKeyListener(Keyboard.getListener());
+        addMouseListener(Mouse.getListener());
     }
 
     public void startGame(IScene scene) {

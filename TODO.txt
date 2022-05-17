@@ -13,3 +13,4 @@
 - Keyboard Handler
 - Mouse Handler
 #- Time (.deltaTime, .time, ...)
+- Make public methods that return a Vector2 return a copy

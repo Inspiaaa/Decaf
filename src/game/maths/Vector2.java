@@ -117,6 +117,14 @@ public class Vector2 {
         return x == other.x && y == other.y;
     }
 
+    @Override
+    public String toString() {
+        return "Vector2{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
+
     public static float distance(Vector2 a, Vector2 b) {
         float dx = b.x - a.x;
         float dy = b.y - a.y;
