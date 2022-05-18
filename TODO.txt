@@ -16,8 +16,10 @@
 - Collision engine
 
 - Rendering with SpriteRenderer
-    - Scaling
-    - Rotation
+    #- Scaling
+    #- Rotation
+    #- Sorting based on layers
+    - Clean up code
 
 #- Keyboard Handler
 

@@ -10,8 +10,9 @@ import game.rendering.Camera;
 import game.rendering.Sprite;
 import game.rendering.SpriteRenderer;
 
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 
 public class Scene implements IScene {
@@ -38,23 +39,44 @@ public class Scene implements IScene {
         go.addComponent(new SpriteRenderer(new Sprite("./Player.png", 16, new Vector2(0.5f, 1))));
     }
 
+    // Calls the onUpdate method of all objects that have subscribed to this event.
+    private void dispatchOnUpdate() {
+        for (IUpdatable obj : objectsToUpdate) {
+            try {
+                obj.onUpdate();
+            }
+            catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+
+    // Calls the onDraw method of all objects that have subscribed to this event.
+    private void dispatchOnDraw() {
+        // Sorts the objects so that the objects with the highest sorting order are drawn on top
+        // of objects with a lower sorting order.
+        IDrawable[] objectsToDrawSortedByDepth = objectsToDraw.toArray(new IDrawable[objectsToDraw.size()]);
+        Arrays.sort(objectsToDrawSortedByDepth, new Comparator<IDrawable>() {
+            @Override
+            public int compare(IDrawable a, IDrawable b) {
+                return Integer.compare(a.getSortingOrder(), b.getSortingOrder());
+            }
+        });
+
+        for (IDrawable obj : objectsToDrawSortedByDepth) {
+            try {
+                obj.onDraw();
+            }
+            catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+
     public void update() {
         Keyboard.update();
         Mouse.update();
+
         camera.preUpdate();
 
-        for (IUpdatable updatable : objectsToUpdate) {
-            try {
-                updatable.onUpdate();
-            }
-            catch (Exception e) { e.printStackTrace(); }
-        }
-        for (IDrawable updatable : objectsToDraw) {
-            try {
-                updatable.onDraw();
-            }
-            catch (Exception e) { e.printStackTrace(); }
-        }
+        dispatchOnUpdate();
+        dispatchOnDraw();
 
         camera.postUpdate();
     }

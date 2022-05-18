@@ -4,29 +4,31 @@ import game.Time;
 import game.Transform;
 import game.core.Component;
 import game.events.IDrawable;
-import game.events.IUpdatable;
 import game.maths.Rectangle;
 import game.maths.Vector2;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class SpriteRenderer extends Component implements IUpdatable, IDrawable {
+public class SpriteRenderer extends Component implements IDrawable {
     private Sprite sprite;
+    private int sortingOrder;
     private Transform transform;
 
     public SpriteRenderer(Sprite sprite) {
+        this(sprite, 0);
+    }
+
+    public SpriteRenderer(Sprite sprite, int sortingOrder) {
         this.sprite = sprite;
+        this.sortingOrder = sortingOrder;
     }
 
     public void onStart() {
         transform = (Transform)getComponent(Transform.class);
     }
 
-    public void onUpdate() {
-
-    }
-
+    @Override
     public void onDraw() {
         // Camera.getMain().getDrawGraphics().drawImage(texture);
         Graphics2D g = Camera.main().getDrawGraphics();
@@ -77,6 +79,15 @@ public class SpriteRenderer extends Component implements IUpdatable, IDrawable {
 
         g.setTransform(tx);
         g.drawImage(sprite.getTexture(), 0, 0, null);
+    }
+
+    @Override
+    public int getSortingOrder() {
+        return sortingOrder;
+    }
+
+    public void setSortingOrder(int sortingOrder) {
+        this.sortingOrder = sortingOrder;
     }
 
     public Sprite getSprite() {
