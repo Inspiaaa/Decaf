@@ -25,7 +25,15 @@
 
 #- Mouse Handler
 
-- Sound Manager
+- Sound System
+    (- Create a SoundManager for loading and playing clips)
+    #- Sound class for representing a sound
+    - Share the sound data (memory) between multiple sound instances
+    #- Call close() on each clip
+    - Load the sound in a separate thread
+    #- Rename Sound to SoundEffect
+    #- Music class for long sound files that need to be streamed from a file (with pause method for stopping without closing)
+    (https://docs.oracle.com/javase/8/docs/technotes/guides/sound/programmer_guide/chapter4.html)
 
 - Graphics Helper for drawing images
 
@@ -36,3 +44,7 @@
 #- Add tags to GameObjects
 
 - Vector2: Get angle from Vector2
+
+- Simple random util class
+
+- Constants for Key ids (make a file called Keys)

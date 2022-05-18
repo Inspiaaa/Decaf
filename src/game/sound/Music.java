@@ -45,7 +45,6 @@ public class Music implements Runnable {
                 if (numBytesRead >= 0) {
                     soundLine.write(sampledData, 0, numBytesRead);
                 }
-                System.out.println(numBytesRead);
             }
         }
         catch (Exception e) {
@@ -91,12 +90,10 @@ public class Music implements Runnable {
     }
 
     public void pause() {
-        System.out.println("Pause");
         stopStreamingData();
     }
 
     public void resume() {
-        System.out.println("Resume");
         startStreamingData();
     }
 
@@ -109,4 +106,6 @@ public class Music implements Runnable {
         FloatControl gainControl = (FloatControl) soundLine.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20 * (float)Math.log10(volume));
     }
+
+    // TODO: Add pan
 }

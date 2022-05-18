@@ -9,6 +9,8 @@ import game.maths.Vector2;
 import game.rendering.Camera;
 import game.rendering.Sprite;
 import game.rendering.SpriteRenderer;
+import game.sound.Music;
+import game.sound.SoundEffect;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -24,9 +26,14 @@ public class Scene implements IScene {
     private final HashSet<IUpdatable> objectsToUpdate;
     private final HashSet<IDrawable> objectsToDraw;
 
+    private Music music;
+
     public Scene() {
         this.objectsToUpdate = new HashSet<IUpdatable>();
         this.objectsToDraw = new HashSet<IDrawable>();
+
+        music = new Music("Level 1.wav");
+        music.play();
     }
 
     @Override
@@ -79,6 +86,21 @@ public class Scene implements IScene {
         dispatchOnDraw();
 
         camera.postUpdate();
+        // System.out.println(Time.getInstance().getFps());
+
+        if (Mouse.isButtonJustDown(1)) {
+            SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
+            sfx.setMasterVolume(1);
+            sfx.play();
+
+//            if (music.isPlaying()) {
+//                music.pause();
+//            }
+//            else {
+//                music.resume();
+//                // music.play();
+//            }
+        }
     }
 
     @Override
