@@ -25,6 +25,8 @@ public class Music implements Runnable {
             soundLine = (SourceDataLine) AudioSystem.getLine(info);
             soundLine.open(audioFormat);
 
+            // TODO: Does this cause a memory leak? If it does, simply close the stream and make a new
+            // one when play() is called (instead of calling reset()).
             audioInputStream.mark(Integer.MAX_VALUE);
         }
         catch (Exception e) {
@@ -54,14 +56,6 @@ public class Music implements Runnable {
     private void startStreamingData() {
         stopStreamingData();
 
-        isStreamingData = true;
-        dataStreamingThread = new Thread(this);
-        dataStreamingThread.start();
-    }
-
-    private void stopStreamingData() {
-        isStreamingData = false;
-
         if (dataStreamingThread != null) {
             try {
                 dataStreamingThread.join();
@@ -69,6 +63,16 @@ public class Music implements Runnable {
                 e.printStackTrace();
             }
         }
+
+        isStreamingData = true;
+        soundLine.start();
+        dataStreamingThread = new Thread(this);
+        dataStreamingThread.start();
+    }
+
+    private void stopStreamingData() {
+        isStreamingData = false;
+        soundLine.stop();
     }
 
     public void play() {
@@ -82,7 +86,6 @@ public class Music implements Runnable {
         // When the music was paused the last time and then restarted, the buffer may still have some content.
         // This flushes the buffer so that it will play from the beginning again.
         soundLine.flush();
-        soundLine.start();
 
         startStreamingData();
     }
@@ -90,12 +93,10 @@ public class Music implements Runnable {
     public void pause() {
         System.out.println("Pause");
         stopStreamingData();
-        soundLine.stop();
     }
 
     public void resume() {
         System.out.println("Resume");
-        soundLine.start();
         startStreamingData();
     }
 
@@ -104,6 +105,8 @@ public class Music implements Runnable {
     }
 
     public void setVolume(float volume) {
-        // TODO
+        // See SoundEffectInstance for an explanation.
+        FloatControl gainControl = (FloatControl) soundLine.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(20 * (float)Math.log10(volume));
     }
 }
