@@ -30,29 +30,16 @@ public class SpriteRenderer extends Component implements IDrawable {
 
     @Override
     public void onDraw() {
-        // Camera.getMain().getDrawGraphics().drawImage(texture);
-        Graphics2D g = Camera.main().getDrawGraphics();
-        g.setTransform(Camera.IDENTITY_TX);
-        g.setColor(new Color(255, 0, 0));
-        // g.drawRect(5, 5, 20, 10);
-        Vector2 pos2 = Camera.main().worldToDrawPos(new Vector2(1, (int) Time.time() % 5));
-        int size = (int)Camera.main().worldToDrawLength(1);
-        g.drawRect((int)pos2.x, (int)pos2.y, size, size);
-
         Camera cam = Camera.main();
+        Graphics2D g = cam.getDrawGraphics();
+
         Vector2 worldPos = transform.getPosition();
-        float rotation = transform.getRotation();
         Vector2 scale = transform.getScale();
-
-        // pos.x = Time.time() * 5 % 4;
-        transform.setRotation(Time.time() * 1);
-        transform.setScale(new Vector2(1, 1));
-
         Rectangle worldBounds = sprite.getWorldBounds();
+        float pixelsPerUnit = cam.getZoom() * cam.getPixelsPerUnit();
 
         AffineTransform tx = new AffineTransform();
 
-        float pixelsPerUnit = cam.getZoom() * cam.getPixelsPerUnit();
         // Move the (0, 0) point for drawing to the correct position on the texture.
         tx.translate(
                 pixelsPerUnit * (worldPos.x - cam.getPosition().x + worldBounds.getLeft()),

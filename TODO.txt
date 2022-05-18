@@ -19,7 +19,7 @@
     #- Scaling
     #- Rotation
     #- Sorting based on layers
-    - Clean up code
+    #- Clean up code
 
 #- Keyboard Handler
 
