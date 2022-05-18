@@ -3,14 +3,17 @@ package game.core;
 import game.Scene;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class GameObject {
     private final ArrayList<Component> components;
     private final Scene scene;
+    private final HashSet<String> tags;
 
     public GameObject(Scene scene) {
         this.scene = scene;
-        this.components = new ArrayList<>();
+        this.components = new ArrayList<Component>();
+        this.tags = new HashSet<String>();
     }
 
     public void addComponent(Component component) {
@@ -65,6 +68,18 @@ public class GameObject {
             destroyComponent(comp);
         }
         components.clear();
+    }
+
+    public boolean hasTag(String tag) {
+        return tags.contains(tag);
+    }
+
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    public void removeTag(String tag) {
+        tags.remove(tag);
     }
 
     public Scene getScene() {

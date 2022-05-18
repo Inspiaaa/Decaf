@@ -21,19 +21,31 @@ public class Component {
 
     // Convenience methods that wrap the GameObject's methods
 
-    protected void addComponent(Component component) {
+    public void addComponent(Component component) {
         gameObject.addComponent(component);
     }
 
-    protected void removeComponent(Component component) {
+    public void removeComponent(Component component) {
         gameObject.removeComponent(component);
     }
 
-    protected Component getComponent(Class<? extends Component> c) {
+    public Component getComponent(Class<? extends Component> c) {
         return gameObject.getComponent(c);
     }
 
-    protected boolean hasComponent(Class<? extends Component> c) {
+    public boolean hasComponent(Class<? extends Component> c) {
         return gameObject.hasComponent(c);
+    }
+
+    public boolean hasTag(String tag) {
+        return gameObject.hasTag(tag);
+    }
+
+    public void addTag(String tag) {
+        gameObject.addTag(tag);
+    }
+
+    public void removeTag(String tag) {
+        gameObject.removeTag(tag);
     }
 }
