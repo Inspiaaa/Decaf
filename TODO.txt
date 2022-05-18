@@ -4,13 +4,33 @@
     #- Resizing
     - Smooth scrolling
     - UI texture
+    - Screen pos to draw pos
+    - Better name for draw texture (world texture?)
+    - Improved creation AffineTransform options
+    - Add option to upsample to screen size
+
 - Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
+
 - Call start (component) at the beginning of the next frame and not directly
+
 - Collision engine
+
 - Rendering with SpriteRenderer
     - Scaling
     - Rotation
-- Keyboard Handler
-- Mouse Handler
+
+#- Keyboard Handler
+
+#- Mouse Handler
+
+- Sound Manager
+
+- Graphics Helper for drawing images
+
 #- Time (.deltaTime, .time, ...)
+
 - Make public methods that return a Vector2 return a copy
+
+- Add tags to GameObjects
+
+- Vector2: Get angle from Vector2

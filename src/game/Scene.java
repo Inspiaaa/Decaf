@@ -57,7 +57,6 @@ public class Scene implements IScene {
         }
 
         camera.postUpdate();
-        System.out.println(Mouse.getPosition());
     }
 
     @Override

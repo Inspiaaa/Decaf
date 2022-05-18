@@ -11,7 +11,8 @@ public class Keyboard {
     // has two advantages:
     // 1. The API of Keyboard is simpler
     // 2. The KeyboardListener (UI thread) can be independent from the game thread and its update
-    // behaviour.
+    // behaviour. This also means that the state of every key (whether it is pressed or not) is constant
+    // during each frame.
 
     private static class KeyboardListener implements KeyListener {
         private final HashMap<Integer, Boolean> keysPressed = new HashMap<Integer, Boolean>();

@@ -15,6 +15,22 @@ public class Rectangle {
         this.height = height;
     }
 
+    public boolean contains(Vector2 point) {
+        return contains(point.x, point.y);
+    }
+
+    public boolean contains(float x, float y) {
+        return getLeft() <= x && x <= getRight()
+                && getBottom() <= y && y <= getTop();
+    }
+
+    public boolean intersects(Rectangle other) {
+        return getLeft() < other.getRight()
+                && getRight() > other.getLeft()
+                && getTop() > other.getBottom()
+                && getBottom() < other.getTop();
+    }
+
     public float getLeft() {
         return x;
     }
