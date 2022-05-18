@@ -33,6 +33,10 @@ public class Time {
         deltaTime = time - lastFrameTime;
     }
 
+    public float getFps() {
+        return 1 / deltaTime;
+    }
+
     public void capFps(float fps) {
         if (fps == 0)
             return;

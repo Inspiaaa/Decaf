@@ -74,10 +74,20 @@ public class SoundInstance {
     // volume = 1 => Normal volume
     // volume = 2 => Twice as loud
     public void setVolume(float volume) {
-        // Or does MASTER_GAIN need to be set instead?
         // https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
-        FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.VOLUME);
-        volumeControl.setValue(volume * masterVolume);
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+        // MASTER_GAIN internally uses decibels for the volume, but a linear scale for the volume
+        // is more practical (and intuitive for programmers). That's why
+        // the 20 * log10 formula is needed for conversion. (20 appears to be a magic constant in the
+        // definition of decibel).
+
+        // Maths:
+        // log10(0) => -infinity => silent
+        // log10(1) => 0 => no change to the volume
+        // log10(2) => >0 => louder
+
+        gainControl.setValue(20 * (float)Math.log10(volume * masterVolume));
     }
 
     // Sets how far left / right the sound is heard from.
