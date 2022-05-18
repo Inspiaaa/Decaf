@@ -1,32 +1,32 @@
 package game.sound;
 
-public class Sound {
+public class SoundEffect {
     private String filepath;
     private float masterVolume;
 
-    public Sound(String filepath) {
+    public SoundEffect(String filepath) {
         this(filepath, 1);
     }
 
-    public Sound(String filepath, float masterVolume) {
+    public SoundEffect(String filepath, float masterVolume) {
         this.filepath = filepath;
         this.masterVolume = masterVolume;
     }
 
-    public SoundInstance play() {
-        SoundInstance instance = new SoundInstance(filepath, masterVolume);
+    public SoundEffectInstance play() {
+        SoundEffectInstance instance = new SoundEffectInstance(filepath, masterVolume);
         instance.play();
         return instance;
     }
 
-    public SoundInstance repeat(int count) {
-        SoundInstance instance = new SoundInstance(filepath, masterVolume);
+    public SoundEffectInstance repeat(int count) {
+        SoundEffectInstance instance = new SoundEffectInstance(filepath, masterVolume);
         instance.repeat(count);
         return instance;
     }
 
-    public SoundInstance repeatForever() {
-        SoundInstance instance = new SoundInstance(filepath, masterVolume);
+    public SoundEffectInstance repeatForever() {
+        SoundEffectInstance instance = new SoundEffectInstance(filepath, masterVolume);
         instance.repeatForever();
         return instance;
     }

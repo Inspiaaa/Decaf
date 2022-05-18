@@ -3,15 +3,15 @@ package game.sound;
 import javax.sound.sampled.*;
 import java.io.File;
 
-public class SoundInstance {
+public class SoundEffectInstance {
     private Clip clip;
     private float masterVolume;
 
-    public SoundInstance(String filepath) {
+    public SoundEffectInstance(String filepath) {
         this(filepath, 1);
     }
 
-    public SoundInstance(String filepath, float masterVolume) {
+    public SoundEffectInstance(String filepath, float masterVolume) {
         this.masterVolume = masterVolume;
 
         try {
