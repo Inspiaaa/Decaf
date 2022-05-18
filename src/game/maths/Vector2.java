@@ -109,6 +109,10 @@ public class Vector2 {
         return this;
     }
 
+    public float angle() {
+        return (float)Math.atan2(y, x);
+    }
+
     public Vector2 copy() {
         return new Vector2(x, y);
     }
