@@ -71,8 +71,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        activeScene.update();
-        g.drawImage(activeScene.getScreen(), 0, 0, null);
+        if (isRunning) {
+            super.paintComponent(g);
+            activeScene.update();
+            g.drawImage(activeScene.getScreen(), 0, 0, null);
+        }
     }
 }
