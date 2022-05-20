@@ -9,7 +9,7 @@
     - Improved creation AffineTransform options
     - Add option to upsample to screen size
 
-- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
+#- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
 
 - Call start (component) at the beginning of the next frame and not directly
 
@@ -56,9 +56,11 @@
 
 - Use javadoc comments
 
-- Move the main code (which sets up the window) into a separate class (Application)
+- Game Application
+    #- Move the main code (which sets up the window) into a separate class (Application)
+    - Add more methods for customisation (e.g. title)
 
 - Add print() function to Components for ease of use (wraps System.out.println)
 
-- Improve the constructor of GameObject: Make a new constructor without parameters that defaults to the
+#- Improve the constructor of GameObject: Make a new constructor without parameters that defaults to the
   active scene

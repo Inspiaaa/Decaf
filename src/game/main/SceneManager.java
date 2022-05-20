@@ -5,7 +5,7 @@ import game.IScene;
 import java.awt.image.BufferedImage;
 
 public class SceneManager {
-    private static SceneManager instance = new SceneManager();
+    private static final SceneManager instance = new SceneManager();
 
     private IScene activeScene;
     private int screenWidth = 1;
