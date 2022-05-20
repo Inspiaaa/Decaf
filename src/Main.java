@@ -1,6 +1,6 @@
-import game.Scene;
-import game.main.GameApplication;
-import game.main.SceneManager;
+import inspiaaa.decaf.Scene;
+import inspiaaa.decaf.main.GameApplication;
+import inspiaaa.decaf.main.SceneManager;
 
 public class Main {
     public static void main(String[] args) {

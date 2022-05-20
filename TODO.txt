@@ -64,3 +64,5 @@
 
 #- Improve the constructor of GameObject: Make a new constructor without parameters that defaults to the
   active scene
+
+- Update package name for the game engine (com.inspiaaa.decaf?)
