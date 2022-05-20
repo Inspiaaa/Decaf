@@ -51,7 +51,9 @@
     #- Range function
     #- Generate Vectors
 
-- Constants for Key ids (make a file called Keys)
-- Same for Mouse buttons
+#- Constants for Key ids (make a file called Keys)
+#- Same for Mouse buttons
 
 - Use javadoc comments
+
+- Move the main code (which sets up the window) into a separate class (Application)
