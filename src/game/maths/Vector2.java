@@ -140,6 +140,10 @@ public class Vector2 {
         return new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
     }
 
+    public static Vector2 fromPolarRad(float radius, float angle) {
+        return new Vector2(radius * (float)Math.cos(angle), radius * (float)Math.sin(angle));
+    }
+
     public static Vector2 lerp(Vector2 start, Vector2 end, float t) {
         t = (t > 1) ? 1 : ((t < 0) ? 0 : t);
         return new Vector2((end.x - start.x) * t + start.x, (end.y - start.y) * t + start.y);
