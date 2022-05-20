@@ -1,6 +1,7 @@
 package game.core;
 
 import game.Scene;
+import game.main.SceneManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +10,10 @@ public class GameObject {
     private final ArrayList<Component> components;
     private final Scene scene;
     private final HashSet<String> tags;
+
+    public GameObject() {
+        this((Scene)SceneManager.getInstance().getActiveScene());
+    }
 
     public GameObject(Scene scene) {
         this.scene = scene;
