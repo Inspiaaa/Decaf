@@ -12,7 +12,7 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     private boolean isRunning;
 
-    private IScene activeScene;
+    private SceneManager sceneManager;
 
     private float maxFps = 60;
 
@@ -29,9 +29,9 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseListener(Mouse.getListener());
     }
 
-    public void startGame(IScene scene) {
-        activeScene = scene;
-        scene.start(getWidth(), getHeight());
+    public void startGame() {
+        sceneManager = SceneManager.getInstance();
+        sceneManager.start(getWidth(), getHeight());
         isRunning = true;
 
         gameThread = new Thread(this);
@@ -51,7 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
             // solution for checking whether the screen has resized saves any
             // synchronisation hassles between the UI thread and the game thread.
             if (newWidth != width || newHeight != height) {
-                activeScene.onResize(newWidth, newHeight);
+                sceneManager.onResize(newWidth, newHeight);
                 width = newWidth;
                 height = newHeight;
             }
@@ -73,8 +73,8 @@ public class GamePanel extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         if (isRunning) {
             super.paintComponent(g);
-            activeScene.update();
-            g.drawImage(activeScene.getScreen(), 0, 0, null);
+            sceneManager.update();
+            g.drawImage(sceneManager.getScreen(), 0, 0, null);
         }
     }
 }
