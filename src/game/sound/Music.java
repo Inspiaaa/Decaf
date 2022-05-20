@@ -74,8 +74,10 @@ public class Music implements Runnable {
         soundLine.stop();
     }
 
+    // Restarts the sound.
     public void play() {
         try {
+            // Reset the source data that should be played.
             audioInputStream.reset();
         }
         catch (Exception e) {

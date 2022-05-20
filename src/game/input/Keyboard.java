@@ -71,6 +71,8 @@ public class Keyboard {
         synchronized (listener) {
             HashMap<Integer, Boolean> newKeysPressed = listener.getKeysPressed();
 
+            // Possible optimisation: Keep a HashSet of keys that have been modified
+            // and only query (iterate) this set instead of every key
             for (Integer key : newKeysPressed.keySet()) {
                 setKeyState(key, newKeysPressed.get(key));
             }

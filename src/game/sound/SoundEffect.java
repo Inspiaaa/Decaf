@@ -1,5 +1,9 @@
 package game.sound;
 
+// The SoundEffect class represents short sound effects that can be loaded fully into memory.
+// This class is a descriptor for a sound effect, while each instance that actually plays is
+// a SoundEffectInstance (which also lets you set up instance-specific fields like pan, and volume).
+// Thanks to its design, you can play multiple of the same kind of sound effects at the same time.
 public class SoundEffect {
     private String filepath;
     private float masterVolume;
