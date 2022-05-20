@@ -24,10 +24,6 @@ public class Music implements Runnable {
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
             soundLine = (SourceDataLine) AudioSystem.getLine(info);
             soundLine.open(audioFormat);
-
-            // TODO: Does this cause a memory leak? If it does, simply close the stream and make a new
-            // one when play() is called (instead of calling reset()).
-            audioInputStream.mark(Integer.MAX_VALUE);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -77,8 +73,11 @@ public class Music implements Runnable {
     // Restarts the sound.
     public void play() {
         try {
-            // Reset the source data that should be played.
-            audioInputStream.reset();
+            // Start the source data from the beginning again.
+            if (audioInputStream != null) {
+                audioInputStream.close();
+            }
+            audioInputStream = AudioSystem.getAudioInputStream(new File(filepath));
         }
         catch (Exception e) {
             e.printStackTrace();

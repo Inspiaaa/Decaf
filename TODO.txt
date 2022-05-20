@@ -28,7 +28,7 @@
 - Sound System
     (- Create a SoundManager for loading and playing clips)
     #- Sound class for representing a sound
-    - Preload the sound data of SoundEffects into memory before playing (and share this memroy)
+    - Preload the sound data of SoundEffects into memory before playing (and share this memory)
     #- Call close() on each clip
     - Load the sound in a separate thread
     #- Rename Sound to SoundEffect
@@ -57,3 +57,8 @@
 - Use javadoc comments
 
 - Move the main code (which sets up the window) into a separate class (Application)
+
+- Add print() function to Components for ease of use (wraps System.out.println)
+
+- Improve the constructor of GameObject: Make a new constructor without parameters that defaults to the
+  active scene
