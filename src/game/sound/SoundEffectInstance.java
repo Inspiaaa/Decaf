@@ -1,15 +1,13 @@
 package game.sound;
 
 import javax.sound.sampled.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class SoundEffectInstance {
     private Clip clip;
     private float masterVolume;
-
-    public SoundEffectInstance(String filepath) {
-        this(filepath, 1);
-    }
 
     public SoundEffectInstance(String filepath, float masterVolume) {
         this.masterVolume = masterVolume;
@@ -18,22 +16,47 @@ public class SoundEffectInstance {
             clip = AudioSystem.getClip();
             AudioInputStream stream = AudioSystem.getAudioInputStream(new File(filepath));
             clip.open(stream);
+            attachCloseOnStopListener();
 
-            // Closes the clip once it has finished playing to prevent a memory leak.
-            clip.addLineListener(new LineListener() {
-                @Override
-                public void update(LineEvent event) {
-                    if (event.getType() == LineEvent.Type.STOP) {
-                        clip.close();
-                    }
-                }
-            });
+            stream.close();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
         setVolume(1);
+    }
+
+    public SoundEffectInstance(byte[] data, float masterVolume) {
+        this.masterVolume = masterVolume;
+
+        try {
+            clip = AudioSystem.getClip();
+            ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(dataStream);
+            clip.open(audioStream);
+
+            attachCloseOnStopListener();
+            dataStream.close();
+            audioStream.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        setVolume(1);
+    }
+
+    private void attachCloseOnStopListener() {
+        // Closes the clip once it has finished playing to prevent a memory leak.
+        clip.addLineListener(new LineListener() {
+            @Override
+            public void update(LineEvent event) {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.close();
+                }
+            }
+        });
     }
 
     public void play() {
