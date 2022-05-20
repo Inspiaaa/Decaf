@@ -48,6 +48,8 @@
 - Vector2: Get angle from Vector2
 
 - Simple random util class
+    #- Range function
+    - Generate Vectors
 
 - Constants for Key ids (make a file called Keys)
 - Same for Mouse buttons
