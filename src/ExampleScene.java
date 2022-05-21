@@ -4,6 +4,7 @@ import inspiaaa.decaf.Transform;
 import inspiaaa.decaf.core.GameObject;
 import inspiaaa.decaf.input.Keyboard;
 import inspiaaa.decaf.input.Keys;
+import inspiaaa.decaf.input.Mouse;
 import inspiaaa.decaf.maths.Vector2;
 import inspiaaa.decaf.rendering.Camera;
 import inspiaaa.decaf.rendering.Sprite;
@@ -33,17 +34,21 @@ public class ExampleScene extends Scene {
         // System.out.println(Time.getInstance().getFps());
 
         Camera cam = Camera.main();
+
+        cam.setZoom(cam.getZoom() * (float)Math.pow(1.1f, Mouse.getScrollAmount()));
+        float moveSpeed = 2;
+
         if (Keyboard.isKeyDown(Keys.W)) {
-            cam.setPosition(cam.getPosition().add(0, 1 * Time.deltaTime()));
+            cam.setPosition(cam.getPosition().add(0, -moveSpeed * Time.deltaTime()));
         }
         if (Keyboard.isKeyDown(Keys.A)) {
-            cam.setPosition(cam.getPosition().add(-1 * Time.deltaTime(), 0));
+            cam.setPosition(cam.getPosition().add(-moveSpeed * Time.deltaTime(), 0));
         }
         if (Keyboard.isKeyDown(Keys.S)) {
-            cam.setPosition(cam.getPosition().add(0, -1 * Time.deltaTime()));
+            cam.setPosition(cam.getPosition().add(0, moveSpeed * Time.deltaTime()));
         }
         if (Keyboard.isKeyDown(Keys.D)) {
-            cam.setPosition(cam.getPosition().add(1 * Time.deltaTime(), 0));
+            cam.setPosition(cam.getPosition().add(moveSpeed * Time.deltaTime(), 0));
         }
 
 //        if (Mouse.isButtonJustDown(1)) {
