@@ -1,5 +1,6 @@
 package inspiaaa.decaf.input;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -46,6 +47,10 @@ public class Keyboard {
 
     private static final KeyboardListener listener = new KeyboardListener();
 
+    public static void setup(JComponent gameContainer) {
+        gameContainer.addKeyListener(listener);
+    }
+
     private static void setKeyState(int key, boolean isDownNow) {
         if (!keysPressed.containsKey(key)) {
             keysPressed.put(key, false);
@@ -77,10 +82,6 @@ public class Keyboard {
                 setKeyState(key, newKeysPressed.get(key));
             }
         }
-    }
-
-    public static KeyListener getListener() {
-        return listener;
     }
 
     public static boolean isKeyDown(int key) {

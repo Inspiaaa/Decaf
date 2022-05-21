@@ -24,8 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
         requestFocus();
 
         Mouse.setup(this);
-        addKeyListener(Keyboard.getListener());
-        addMouseListener(Mouse.getListener());
+        Keyboard.setup(this);
     }
 
     public void startGame() {
