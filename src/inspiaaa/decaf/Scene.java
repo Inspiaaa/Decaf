@@ -7,20 +7,27 @@ import inspiaaa.decaf.input.Keyboard;
 import inspiaaa.decaf.input.Mouse;
 import inspiaaa.decaf.maths.Vector2;
 import inspiaaa.decaf.rendering.Camera;
+import inspiaaa.decaf.rendering.GraphicsHelper;
 import inspiaaa.decaf.rendering.Sprite;
 import inspiaaa.decaf.rendering.SpriteRenderer;
 import inspiaaa.decaf.sound.Music;
 import inspiaaa.decaf.sound.SoundEffect;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 
 public class Scene implements IScene {
-    private Camera camera;
+    private Camera worldCamera;
+    private Camera uiCamera;
+
     private float pixelsPerUnit = 16;
     private float cameraSize = 8;
+
+    private Color backgroundColor;
+    private BufferedImage screen;
 
     // Events
     private final HashSet<IUpdatable> objectsToUpdate;
@@ -32,18 +39,62 @@ public class Scene implements IScene {
         this.objectsToUpdate = new HashSet<IUpdatable>();
         this.objectsToDraw = new HashSet<IDrawable>();
 
+        backgroundColor = Color.WHITE;
+
         music = new Music("Level 1.wav");
         music.play();
     }
 
     @Override
     public void start(int width, int height) {
-        camera = new Camera(pixelsPerUnit, cameraSize, width, height);
-        camera.markAsMain();
+        screen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        worldCamera = new Camera(pixelsPerUnit, cameraSize, width, height);
+        worldCamera.markAsMain();
+        uiCamera = new Camera(pixelsPerUnit, cameraSize, width, height);
+        uiCamera.markAsUi();
 
         GameObject go = new GameObject(this);
         go.addComponent(new Transform(new Vector2(1, 2)));
         go.addComponent(new SpriteRenderer(new Sprite("./Player.png", 16, new Vector2(0.5f, 1))));
+    }
+
+    @Override
+    public void onResize(int width, int height) {
+        screen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        worldCamera.onResize(width, height);
+        uiCamera.onResize(width, height);
+    }
+
+    public void update() {
+        Keyboard.update();
+        Mouse.update();
+
+        GraphicsHelper.fill(screen, backgroundColor);
+        worldCamera.beginNextFrame();
+        uiCamera.beginNextFrame();
+
+        dispatchOnUpdate();
+        dispatchOnDraw();
+
+        worldCamera.renderToScreen(screen);
+        uiCamera.renderToScreen(screen);
+
+        // System.out.println(Time.getInstance().getFps());
+
+        if (Mouse.isButtonJustDown(1)) {
+            SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
+            sfx.setMasterVolume(1);
+            sfx.play();
+
+            if (music.isPlaying()) {
+                music.pause();
+            }
+            else {
+                // music.resume();
+                music.play();
+            }
+        }
     }
 
     // Calls the onUpdate method of all objects that have subscribed to this event.
@@ -76,33 +127,6 @@ public class Scene implements IScene {
         }
     }
 
-    public void update() {
-        Keyboard.update();
-        Mouse.update();
-
-        camera.preUpdate();
-
-        dispatchOnUpdate();
-        dispatchOnDraw();
-
-        camera.postUpdate();
-        // System.out.println(Time.getInstance().getFps());
-
-        if (Mouse.isButtonJustDown(1)) {
-            SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
-            sfx.setMasterVolume(1);
-            sfx.play();
-
-            if (music.isPlaying()) {
-                music.pause();
-            }
-            else {
-                // music.resume();
-                music.play();
-            }
-        }
-    }
-
     @Override
     public void destroy() {
 
@@ -110,12 +134,7 @@ public class Scene implements IScene {
 
     @Override
     public BufferedImage getScreen() {
-        return camera.getScreenTexture();
-    }
-
-    @Override
-    public void onResize(int width, int height) {
-        camera.onResize(width, height);
+        return screen;
     }
 
     // Adds an object to the event loop, based on its interfaces (e.g. IUpdatable)
