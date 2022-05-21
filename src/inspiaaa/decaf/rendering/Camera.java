@@ -80,7 +80,7 @@ public class Camera {
         drawToScreenTransform.translate(
                 -0.5f * screenWidth * (zoom - 1),
                 -0.5f * screenHeight * (zoom - 1));
-        
+
         double scalingFactor = zoom * (screenPixelsPerUnit / pixelsPerUnit);
         drawToScreenTransform.scale(scalingFactor, scalingFactor);
     }
