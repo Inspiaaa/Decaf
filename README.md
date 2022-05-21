@@ -1,10 +1,56 @@
 # Java Game Engine
 
-A zero dependency, lightweight Java game engine for making 2D games inspired by Unity and Libgdx.
+A zero dependency, lightweight Java game engine for making 2D games inspired by Unity and Libgdx. It is built on top of java swing / awt.
+
+**Features:**
+
+- GameObjects and Components
+
+- Scene management
+
+- Keyboard and Mouse
+
+- Sound handling for music and sound effects
+
+- Maths
+  
+  - Vector2 type
+  
+  - Easy to use Random utility
 
 ## Component-based architecture
 
 Similarly to Unity, most objects (entities) in your game are represented by GameObjects. They themselves don't generally implement behaviour (such as rendering or collision handling), but they instead act as a container for components. Each feature / functionality an object should have is implemented in a separate component.
+
+## Input
+
+Decaf also has an easy to use, polling-based API for querying the Keyboard and Mouse state. During the period of one frame, the state of the mouse and keyboard will be the same.
+
+### Keyboard
+
+```java
+// Is the W key currently being held down?
+Keyboard.isKeyDown(Keys.W);
+Keyboard.isKeyDown(Keys.ALPHA0);
+
+// Did the User just press the space key down?
+Keyboard.isKeyJustDown(Keys.SPACE);
+
+// Did the User just release the space key?
+Keyboard.isKeyJustUp(Keys.SPACE);
+```
+
+### Mouse
+
+```java
+Mouse.isButtonDown(1);
+// Same as:
+Mouse.isButtonDown(MouseButtons.BUTTON1);
+
+Mouse.isButtonJustDown(MouseButtons.BUTTON1);
+
+Mouse.istButtonJustUp(MouseButtons.BUTTON1);
+```
 
 ## Music and Sound
 
@@ -56,7 +102,7 @@ sfx.stop();
 
 After you've stopped a sound effect from being played, it can not be restarted or resumed, as the internal resources are automatically cleaned up.
 
-## Using music
+### Using music
 
 Similarly to sound effects, you should only create a `Music` instance for each sound at the start of the game and then this instance should be reused.
 
@@ -74,5 +120,3 @@ music.pause();
 // Continues playing
 music.resume();
 ```
-
-
