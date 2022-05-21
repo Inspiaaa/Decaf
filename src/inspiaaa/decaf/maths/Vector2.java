@@ -117,6 +117,10 @@ public class Vector2 {
         return new Vector2(x, y);
     }
 
+    public boolean isZero() {
+        return x == 0 && y == 0;
+    }
+
     public boolean equals(Vector2 other) {
         return x == other.x && y == other.y;
     }

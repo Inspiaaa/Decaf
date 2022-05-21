@@ -8,6 +8,9 @@
     - Better name for draw texture (world texture?)
     - Improved creation AffineTransform options
     - Add option to upsample to screen size
+    - Add feature to make UI for a reference, virtual screen size (width, and height) (=> Match the
+      screen height when upscaling, but stretch each x coordinate so that the width would match the screen width,
+      => Scale x and y independently)
 
 #- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
 

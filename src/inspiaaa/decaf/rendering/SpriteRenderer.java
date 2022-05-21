@@ -34,39 +34,32 @@ public class SpriteRenderer extends Component implements IDrawable {
         Graphics2D g = cam.getDrawGraphics();
 
         Vector2 worldPos = transform.getPosition();
-        Vector2 scale = transform.getScale();
-        Rectangle worldBounds = sprite.getWorldBounds();
+
         float pixelsPerUnit = cam.getZoom() * cam.getPixelsPerUnit();
+
         transform.setRotation(Time.time());  // TODO: Comment me out
 
-        AffineTransform tx = new AffineTransform();
-
-        // Move the (0, 0) point for drawing to the correct position on the texture.
-        tx.translate(
-                pixelsPerUnit * (worldPos.x - cam.getPosition().x + worldBounds.getLeft()),
-                pixelsPerUnit * (worldPos.y - cam.getPosition().y + worldBounds.getTop()));
-
-        // Subtract the origin, so that the sprite can be scaled and rotated around the origin.
-        tx.translate(
-                -worldBounds.getLeft() * pixelsPerUnit,
-                -worldBounds.getTop() * pixelsPerUnit);
-
-        // Rotate the image around its origin.
-        tx.rotate(transform.getRotation());
-        tx.scale(scale.x, scale.y);
-
-        // Move it by its origin again
-        tx.translate(
-                worldBounds.getLeft() * pixelsPerUnit,
-                worldBounds.getTop() * pixelsPerUnit);
+        float xInPixels = pixelsPerUnit * (worldPos.x - cam.getPosition().x);
+        float yInPixels = pixelsPerUnit * (worldPos.y - cam.getPosition().y);
 
         // Scale the drawing context so that the width (height) of the sprite matches
         // the correct amount of pixels on the screen.
         float scalingFactorForWidth = pixelsPerUnit / sprite.getPixelsPerUnit();
-        tx.scale(scalingFactorForWidth, scalingFactorForWidth);
 
-        g.setTransform(tx);
-        g.drawImage(sprite.getTexture(), 0, 0, null);
+        Vector2 scale = transform.getScale().mul(scalingFactorForWidth);
+        float rotation = transform.getRotation();
+        GraphicsHelper.drawImageWithScaleRotationOrigin(
+                g,
+                sprite.getTexture(),
+                xInPixels,
+                yInPixels,
+                scale,
+                rotation,
+                sprite.getOrigin());
+
+        GraphicsHelper.resetTransform(g);
+        g.setColor(Color.RED);
+        g.drawRect((int)xInPixels, (int)yInPixels, 1, 1);
     }
 
     @Override

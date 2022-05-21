@@ -43,10 +43,10 @@ public class Camera {
     public void onResize(int width, int height) {
         screenWidth = width;
         screenHeight = height;
-        updateTextures();
+        updateTexture();
     }
 
-    private void updateTextures() {
+    private void updateTexture() {
         // Make the draw texture match the targetHeightInUnits.
         float drawHeight = targetHeightInUnits * zoom * pixelsPerUnit;
         // But make the width scale up to the aspect ratio of the actual screen.

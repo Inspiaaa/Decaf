@@ -1,5 +1,7 @@
 package inspiaaa.decaf.rendering;
 
+import inspiaaa.decaf.maths.Vector2;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -40,5 +42,56 @@ public class GraphicsHelper {
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
         // Reset to default
         g.setComposite(AlphaComposite.SrcOver);
+    }
+
+    public static void resetTransform(Graphics2D graphics) {
+        graphics.setTransform(IDENTITY_TX);
+    }
+
+    public static void drawImage(Graphics2D g, BufferedImage image, float x, float y) {
+        resetTransform(g);
+        g.drawImage(image, (int)x, (int)y, null);
+    }
+
+    // Draws an image that is scaled and rotated around its origin
+    public static void drawImageWithScaleRotationOrigin(
+            Graphics2D g,
+            BufferedImage image,
+            float x,
+            float y,
+            Vector2 scale,
+            float rotation,
+            Vector2 origin) {
+
+        AffineTransform tx = new AffineTransform();
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float originOffsetX = width * origin.x;
+        float originOffsetY = height * origin.y;
+
+        // It seems that Rotate, Scale, Translate order common for transform matrices is reversed.
+        // Reading the operations from top to bottom can help to understand what is being done.
+
+        tx.translate(x, y);
+
+        if (scale.x != 1 || scale.y != 1) {
+            // Scale around (0, 0) (the origin)
+            tx.scale(scale.x, scale.y);
+        }
+
+        if (rotation != 0) {
+            // Rotate the image around (0, 0) (the origin)
+            tx.rotate(rotation);
+        }
+
+        if (originOffsetX != 0 || originOffsetY != 0) {
+            // Make the origin (0, 0)
+            tx.translate(-originOffsetX, -originOffsetY);
+        }
+
+        g.setTransform(tx);
+        g.drawImage(image, 0, 0, null);
     }
 }
