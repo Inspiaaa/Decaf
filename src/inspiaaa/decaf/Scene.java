@@ -1,17 +1,11 @@
 package inspiaaa.decaf;
 
-import inspiaaa.decaf.core.GameObject;
 import inspiaaa.decaf.events.IDrawable;
 import inspiaaa.decaf.events.IUpdatable;
 import inspiaaa.decaf.input.Keyboard;
 import inspiaaa.decaf.input.Mouse;
-import inspiaaa.decaf.maths.Vector2;
 import inspiaaa.decaf.rendering.Camera;
 import inspiaaa.decaf.rendering.GraphicsHelper;
-import inspiaaa.decaf.rendering.Sprite;
-import inspiaaa.decaf.rendering.SpriteRenderer;
-import inspiaaa.decaf.sound.Music;
-import inspiaaa.decaf.sound.SoundEffect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -33,16 +27,11 @@ public class Scene implements IScene {
     private final HashSet<IUpdatable> objectsToUpdate;
     private final HashSet<IDrawable> objectsToDraw;
 
-    private Music music;
-
     public Scene() {
         this.objectsToUpdate = new HashSet<IUpdatable>();
         this.objectsToDraw = new HashSet<IDrawable>();
 
         backgroundColor = Color.WHITE;
-
-        music = new Music("Level 1.wav");
-        music.play();
     }
 
     @Override
@@ -53,10 +42,6 @@ public class Scene implements IScene {
         worldCamera.markAsMain();
         uiCamera = new Camera(pixelsPerUnit, cameraSize, width, height);
         uiCamera.markAsUi();
-
-        GameObject go = new GameObject(this);
-        go.addComponent(new Transform(new Vector2(1, 2)));
-        go.addComponent(new SpriteRenderer(new Sprite("./Player.png", 16, new Vector2(0.5f, 1))));
     }
 
     @Override
@@ -79,22 +64,6 @@ public class Scene implements IScene {
 
         worldCamera.renderToScreen(screen);
         uiCamera.renderToScreen(screen);
-
-        // System.out.println(Time.getInstance().getFps());
-
-        if (Mouse.isButtonJustDown(1)) {
-            SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
-            sfx.setMasterVolume(1);
-            sfx.play();
-
-            if (music.isPlaying()) {
-                music.pause();
-            }
-            else {
-                // music.resume();
-                music.play();
-            }
-        }
     }
 
     // Calls the onUpdate method of all objects that have subscribed to this event.

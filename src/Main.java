@@ -7,7 +7,7 @@ public class Main {
 	    System.out.println("Hello world");
 
 		GameApplication app = new GameApplication();
-		SceneManager.getInstance().setActiveScene(new Scene());
+		SceneManager.getInstance().setActiveScene(new ExampleScene());
 		app.start();
     }
 }
