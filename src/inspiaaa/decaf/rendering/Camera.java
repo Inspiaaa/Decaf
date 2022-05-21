@@ -1,5 +1,6 @@
 package inspiaaa.decaf.rendering;
 
+import inspiaaa.decaf.core.Component;
 import inspiaaa.decaf.maths.Vector2;
 
 import java.awt.*;
@@ -55,14 +56,14 @@ public class Camera {
 
     private void updateTopLeftPos() {
         topLeftPosition = position.sub(
-                0.5f * screenWidth / (screenPixelsPerUnit * zoom),
-                0.5f * screenHeight / (screenPixelsPerUnit * zoom)
+                0.5f * screenWidth / screenPixelsPerUnit,
+                0.5f * screenHeight / screenPixelsPerUnit
         );
     }
 
     private void updateTexture() {
         // Make the draw texture match the targetHeightInUnits.
-        float drawHeight = targetHeightInUnits * zoom * pixelsPerUnit;
+        float drawHeight = targetHeightInUnits * pixelsPerUnit;
         // But make the width scale up to the aspect ratio of the actual screen.
         float drawWidth = drawHeight * ((float)screenWidth / screenHeight);
         drawTexture = new BufferedImage((int)drawWidth, (int)drawHeight, BufferedImage.TYPE_INT_ARGB);
@@ -73,7 +74,14 @@ public class Camera {
 
     private void updateTransform() {
         drawToScreenTransform = new AffineTransform();
-        double scalingFactor = zoom * (double)screenWidth / drawTexture.getWidth();
+
+        // As the texture is scaled from the top left corner, if zoom > 1 it will overshoot in size
+        // to the right and to the bottom. To avoid this, it is scaled from the center of the screen.
+        drawToScreenTransform.translate(
+                -0.5f * screenWidth * (zoom - 1),
+                -0.5f * screenHeight * (zoom - 1));
+        
+        double scalingFactor = zoom * (screenPixelsPerUnit / pixelsPerUnit);
         drawToScreenTransform.scale(scalingFactor, scalingFactor);
     }
 
@@ -121,6 +129,7 @@ public class Camera {
     public void setZoom(float zoom) {
         this.zoom = zoom;
         updateTopLeftPos();
+        updateTransform();
     }
 
     public float getZoom() {

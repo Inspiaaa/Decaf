@@ -31,7 +31,7 @@ public class SpriteRenderer extends Component implements IDrawable {
         Graphics2D g = cam.getDrawGraphics();
         Vector2 worldPos = transform.getPosition();
         Vector2 cameraPos = cam.getTopLeftPosition();
-        float pixelsPerUnit = cam.getZoom() * cam.getPixelsPerUnit();
+        float pixelsPerUnit = cam.getPixelsPerUnit();
 
         float xInPixels = pixelsPerUnit * (worldPos.x - cameraPos.x);
         float yInPixels = pixelsPerUnit * (worldPos.y - cameraPos.y);
