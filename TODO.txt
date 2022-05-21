@@ -11,6 +11,7 @@
     - Add feature to make UI for a reference, virtual screen size (width, and height) (=> Match the
       screen height when upscaling, but stretch each x coordinate so that the width would match the screen width,
       => Scale x and y independently)
+    - Make the position the center of the viewing field
 
 #- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
 
@@ -18,7 +19,7 @@
 
 - Collision engine
 
-- Rendering with SpriteRenderer
+#- Rendering with SpriteRenderer
     #- Scaling
     #- Rotation
     #- Sorting based on layers
@@ -74,3 +75,7 @@
 - Mouse and Keyboard: Run in two phases: UI and game phase. The UI should then be able to block the game input
   from reaching the second phase
 - Mouse: hide / show mouse pointer
+
+- Resources class for accessing files in a dedicated resources / assets folder
+
+- Optimise imports

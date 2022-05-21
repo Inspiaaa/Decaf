@@ -1,14 +1,11 @@
 package inspiaaa.decaf.rendering;
 
-import inspiaaa.decaf.Time;
 import inspiaaa.decaf.Transform;
 import inspiaaa.decaf.core.Component;
 import inspiaaa.decaf.events.IDrawable;
-import inspiaaa.decaf.maths.Rectangle;
 import inspiaaa.decaf.maths.Vector2;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 public class SpriteRenderer extends Component implements IDrawable {
     private Sprite sprite;
@@ -32,12 +29,12 @@ public class SpriteRenderer extends Component implements IDrawable {
     public void onDraw() {
         Camera cam = Camera.main();
         Graphics2D g = cam.getDrawGraphics();
-
         Vector2 worldPos = transform.getPosition();
+        Vector2 cameraPos = cam.getTopLeftPosition();
         float pixelsPerUnit = cam.getZoom() * cam.getPixelsPerUnit();
 
-        float xInPixels = pixelsPerUnit * (worldPos.x - cam.getPosition().x);
-        float yInPixels = pixelsPerUnit * (worldPos.y - cam.getPosition().y);
+        float xInPixels = pixelsPerUnit * (worldPos.x - cameraPos.x);
+        float yInPixels = pixelsPerUnit * (worldPos.y - cameraPos.y);
 
         // Scale the drawing context so that the width (height) of the sprite matches
         // the correct amount of pixels on the screen.

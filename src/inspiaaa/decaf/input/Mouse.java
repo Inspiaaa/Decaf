@@ -42,7 +42,7 @@ public class Mouse {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-            scrollAmount += -e.getWheelRotation();
+            scrollAmount -= e.getWheelRotation();
         }
     }
 

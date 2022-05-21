@@ -4,7 +4,6 @@ import inspiaaa.decaf.maths.Vector2;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Camera {
@@ -19,16 +18,21 @@ public class Camera {
     private float pixelsPerUnit;
     private float targetHeightInUnits;
 
+    // Dynamically calculated after each resize
+    private float screenPixelsPerUnit;
+
     // TODO: Introduce a boolean whether it should match the screen resolution
     // Then it should dynamically update the pixelsPerUnit to match the screen resolution
 
     private float zoom;
+    // Position of the top left corner of the camera
+    private Vector2 topLeftPosition;
+    // Position of the center of the camera
     private Vector2 position;
 
     private int screenWidth;
     private int screenHeight;
 
-    private AffineTransform worldToDrawTransform;
     private AffineTransform drawToScreenTransform;
 
     public Camera(float pixelsPerUnit, float targetHeightInUnits, int startWidth, int startHeight) {
@@ -43,7 +47,17 @@ public class Camera {
     public void onResize(int width, int height) {
         screenWidth = width;
         screenHeight = height;
+        screenPixelsPerUnit = screenHeight / targetHeightInUnits;
+        updateTopLeftPos();
+
         updateTexture();
+    }
+
+    private void updateTopLeftPos() {
+        topLeftPosition = position.sub(
+                0.5f * screenWidth / (screenPixelsPerUnit * zoom),
+                0.5f * screenHeight / (screenPixelsPerUnit * zoom)
+        );
     }
 
     private void updateTexture() {
@@ -54,14 +68,10 @@ public class Camera {
         drawTexture = new BufferedImage((int)drawWidth, (int)drawHeight, BufferedImage.TYPE_INT_ARGB);
 
         drawGraphics = (Graphics2D)drawTexture.getGraphics();
-        updateTransforms();
+        updateTransform();
     }
 
-    private void updateTransforms() {
-        worldToDrawTransform = new AffineTransform();
-        worldToDrawTransform.translate(-position.x, -position.y);
-        worldToDrawTransform.scale(pixelsPerUnit, pixelsPerUnit);
-
+    private void updateTransform() {
         drawToScreenTransform = new AffineTransform();
         double scalingFactor = zoom * (double)screenWidth / drawTexture.getWidth();
         drawToScreenTransform.scale(scalingFactor, scalingFactor);
@@ -78,18 +88,25 @@ public class Camera {
         g.drawImage(drawTexture, 0, 0, null);
     }
 
-    public Vector2 worldToDrawPos(Vector2 pos) {
-        Point2D transformed = worldToDrawTransform.transform(new Point2D.Float(pos.x, pos.y), null);
-        return new Vector2((float)transformed.getX(), (float)transformed.getY());
+    public Vector2 worldToDrawPos(Vector2 worldPos) {
+        return worldPos.sub(topLeftPosition).mul(pixelsPerUnit * zoom);
+    }
+
+    public Vector2 screenToWorldPos(Vector2 screenPos) {
+        return topLeftPosition.add(screenPos.div(screenPixelsPerUnit * zoom));
+    }
+
+    public Vector2 worldToScreenPos(Vector2 worldPos) {
+        return worldPos.sub(topLeftPosition).mul(screenPixelsPerUnit * zoom);
     }
 
     public float worldToDrawLength(float lengthInWorld) {
-        return lengthInWorld * (float)worldToDrawTransform.getScaleX();
+        return lengthInWorld * zoom * pixelsPerUnit;
     }
 
     public void setPosition(Vector2 position) {
         this.position = position;
-        updateTransforms();
+        updateTopLeftPos();
     }
 
     public Vector2 getPosition() {
@@ -97,17 +114,17 @@ public class Camera {
         return this.position;
     }
 
+    public Vector2 getTopLeftPosition() {
+        return topLeftPosition;
+    }
+
     public void setZoom(float zoom) {
         this.zoom = zoom;
-        updateTransforms();
+        updateTopLeftPos();
     }
 
     public float getZoom() {
         return zoom;
-    }
-
-    public AffineTransform getWorldToDrawTransform() {
-        return worldToDrawTransform;
     }
 
     public Graphics2D getDrawGraphics() {
@@ -121,6 +138,8 @@ public class Camera {
     public float getPixelsPerUnit() {
         return pixelsPerUnit;
     }
+
+
 
     public void markAsMain() {
         main = this;
