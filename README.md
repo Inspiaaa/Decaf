@@ -1,4 +1,4 @@
-# Java Game Engine
+# Decaf
 
 A zero dependency, lightweight Java game engine for making 2D games inspired by Unity and Libgdx. It is built on top of java swing / awt. Decaf makes it especially easy to build pixel art games.
 
