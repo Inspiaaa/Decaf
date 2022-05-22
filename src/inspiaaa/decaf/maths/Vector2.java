@@ -1,5 +1,7 @@
 package inspiaaa.decaf.maths;
 
+import java.util.Objects;
+
 public class Vector2 {
     public float x;
     public float y;
@@ -124,6 +126,22 @@ public class Vector2 {
     public boolean equals(Vector2 other) {
         return x == other.x && y == other.y;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (! (o instanceof Vector2)) {
+            return false;
+        }
+
+        Vector2 other = (Vector2) o;
+        return x == other.x && y == other.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
 
     @Override
     public String toString() {
