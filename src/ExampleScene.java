@@ -5,6 +5,7 @@ import inspiaaa.decaf.gameobject.GameObject;
 import inspiaaa.decaf.input.Keyboard;
 import inspiaaa.decaf.input.Keys;
 import inspiaaa.decaf.input.Mouse;
+import inspiaaa.decaf.maths.Random;
 import inspiaaa.decaf.maths.Vector2;
 import inspiaaa.decaf.rendering.Camera;
 import inspiaaa.decaf.rendering.Sprite;
@@ -21,17 +22,25 @@ public class ExampleScene extends Scene {
 //        music = new Music("Level 1.wav");
 //        music.play();
 
-        GameObject go = new GameObject(this);
+        Sprite sprite = new Sprite("./Player.png", 16, Sprite.ORIGIN_BOTTOM_CENTER);
+        GameObject go = new GameObject();
         go.addComponent(new Transform(new Vector2(1, 2)));
-        go.addComponent(new SpriteRenderer(new Sprite("./Player.png", 16, Sprite.ORIGIN_BOTTOM_CENTER)));
+        go.addComponent(new SpriteRenderer(sprite));
         go.addComponent(new ExampleComponent());
+
+        for (int i = 0; i < 20; i ++) {
+            GameObject g = new GameObject();
+            g.addComponent(new Transform(new Vector2(Random.range(-5f, 5f), Random.range(-5f, 5f))));
+            g.addComponent(new SpriteRenderer(sprite));
+            g.addComponent(new ExampleComponent());
+        }
     }
 
     @Override
     public void update() {
         super.update();
 
-        // System.out.println(Time.getInstance().getFps());
+        System.out.println(Time.getInstance().getFps());
 
         Camera cam = Camera.main();
 
@@ -63,6 +72,5 @@ public class ExampleScene extends Scene {
 //                // music.resume();
 //                music.play();
 //            }
-//        }
     }
 }
