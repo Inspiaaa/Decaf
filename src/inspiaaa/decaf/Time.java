@@ -1,7 +1,7 @@
 package inspiaaa.decaf;
 
 public class Time {
-    private static Time instance;
+    private static Time instance = new Time();
 
     // Time in nano seconds when the timer started.
     private final long startTimeInNs;
@@ -64,9 +64,6 @@ public class Time {
     }
 
     public static Time getInstance() {
-        if (instance == null) {
-            instance = new Time();
-        }
         return instance;
     }
 

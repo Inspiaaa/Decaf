@@ -4,12 +4,12 @@ package inspiaaa.decaf.maths;
 public class Random {
     private static final RandomHelper instance = new RandomHelper();
 
-    public void setSeed(long seed) { instance.setSeed(seed); }
-    public float range(float minIncl, float maxIncl) { return instance.range(minIncl, maxIncl); }
-    public int range(int minIncl, int maxIncl) { return instance.range(minIncl, maxIncl); }
-    public float angleRad() { return instance.angleRad(); }
-    public Vector2 insideUnitCircle() { return instance.insideUnitCircle(); }
-    public Vector2 insideCircle(float radius) { return instance.insideCircle(radius); }
-    public Vector2 onUnitCircle() { return instance.onUnitCircle(); }
-    public Vector2 onCircle(float radius) { return instance.onCircle(radius); }
+    public static void setSeed(long seed) { instance.setSeed(seed); }
+    public static float range(float minIncl, float maxIncl) { return instance.range(minIncl, maxIncl); }
+    public static int range(int minIncl, int maxIncl) { return instance.range(minIncl, maxIncl); }
+    public static float angleRad() { return instance.angleRad(); }
+    public static Vector2 insideUnitCircle() { return instance.insideUnitCircle(); }
+    public static Vector2 insideCircle(float radius) { return instance.insideCircle(radius); }
+    public static Vector2 onUnitCircle() { return instance.onUnitCircle(); }
+    public static Vector2 onCircle(float radius) { return instance.onCircle(radius); }
 }
