@@ -10,7 +10,7 @@ A zero dependency, lightweight Java game engine for making 2D games inspired by 
 
 - 2d Camera system
 
-- Keyboard and Mouse
+- Keyboard and Mouse APIs
 
 - Sound handling for music and sound effects
 
@@ -44,6 +44,8 @@ Keyboard.isKeyJustUp(Keys.SPACE);
 
 ### Mouse
 
+Mouse buttons:
+
 ```java
 Mouse.isButtonDown(1);
 // Same as:
@@ -52,6 +54,19 @@ Mouse.isButtonDown(MouseButtons.BUTTON1);
 Mouse.isButtonJustDown(MouseButtons.BUTTON1);
 
 Mouse.istButtonJustUp(MouseButtons.BUTTON1);
+```
+
+Mouse wheel:
+
+```java
+float scrollAmount = Mouse.getScrollAmount();
+```
+
+Mouse position:
+
+```java
+Vector2 screenPosition = Mouse.getPosition();
+Vector2 worldPosition = Camera.main().screenToWorldPos(screenPosition);
 ```
 
 ## Music and Sound

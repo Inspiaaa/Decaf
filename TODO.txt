@@ -18,6 +18,8 @@
 - Call start (component) at the beginning of the next frame and not directly
 
 - Collision engine
+  - Detect collisions
+  - Resolve collisions
 
 #- Rendering with SpriteRenderer
     #- Scaling
@@ -75,6 +77,8 @@
 - Mouse and Keyboard: Run in two phases: UI and game phase. The UI should then be able to block the game input
   from reaching the second phase
 - Mouse: hide / show mouse pointer
+#- Add mouse wheel API to Mouse
+#- Document mouse wheel API
 
 - Resources class for accessing files in a dedicated resources / assets folder
 
