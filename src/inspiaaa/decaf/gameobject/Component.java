@@ -1,4 +1,4 @@
-package inspiaaa.decaf.core;
+package inspiaaa.decaf.gameobject;
 
 public class Component {
     protected GameObject gameObject;

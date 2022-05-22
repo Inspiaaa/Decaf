@@ -1,7 +1,7 @@
 package inspiaaa.decaf.rendering;
 
 import inspiaaa.decaf.Transform;
-import inspiaaa.decaf.core.Component;
+import inspiaaa.decaf.gameobject.Component;
 import inspiaaa.decaf.events.IDrawable;
 import inspiaaa.decaf.maths.Vector2;
 

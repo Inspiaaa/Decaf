@@ -1,6 +1,5 @@
 package inspiaaa.decaf.rendering;
 
-import inspiaaa.decaf.core.Component;
 import inspiaaa.decaf.maths.Vector2;
 
 import java.awt.*;

@@ -1,6 +1,6 @@
 package inspiaaa.decaf;
 
-import inspiaaa.decaf.core.Component;
+import inspiaaa.decaf.gameobject.Component;
 import inspiaaa.decaf.maths.Vector2;
 
 public class Transform extends Component {

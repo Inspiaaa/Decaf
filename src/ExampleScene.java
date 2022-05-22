@@ -1,7 +1,7 @@
 import inspiaaa.decaf.Scene;
 import inspiaaa.decaf.Time;
 import inspiaaa.decaf.Transform;
-import inspiaaa.decaf.core.GameObject;
+import inspiaaa.decaf.gameobject.GameObject;
 import inspiaaa.decaf.input.Keyboard;
 import inspiaaa.decaf.input.Keys;
 import inspiaaa.decaf.input.Mouse;

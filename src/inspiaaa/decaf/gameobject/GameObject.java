@@ -1,4 +1,4 @@
-package inspiaaa.decaf.core;
+package inspiaaa.decaf.gameobject;
 
 import inspiaaa.decaf.Scene;
 import inspiaaa.decaf.main.SceneManager;

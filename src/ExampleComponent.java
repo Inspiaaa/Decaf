@@ -1,6 +1,6 @@
 import inspiaaa.decaf.Time;
 import inspiaaa.decaf.Transform;
-import inspiaaa.decaf.core.Component;
+import inspiaaa.decaf.gameobject.Component;
 import inspiaaa.decaf.events.IUpdatable;
 
 public class ExampleComponent extends Component implements IUpdatable {
