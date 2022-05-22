@@ -12,6 +12,7 @@
       screen height when upscaling, but stretch each x coordinate so that the width would match the screen width,
       => Scale x and y independently)
     - Make the position the center of the viewing field
+    - Only render objects that are visible
 
 #- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
 
