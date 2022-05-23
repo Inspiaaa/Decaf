@@ -47,7 +47,7 @@ public class PlayerController extends Component implements IUpdatable {
     public void onUpdate() {
         // Moves the player with the speed of 1 unit per second to the right
         transform.setPosition(
-            transform.getPosition().add(1, 0).mul(Time.deltaTime())
+            transform.getPosition().add(1 * Time.deltaTime(), 0)
         );
     }
 }
