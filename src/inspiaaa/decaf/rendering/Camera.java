@@ -85,7 +85,6 @@ public class Camera {
     }
 
     private void updateViewedPartOfTexture() {
-        System.out.println("Recalc");
         if (targetPixelsPerUnit != -1) {
             // Make the draw texture match the targetHeightInUnits.
             drawHeight = targetHeightInUnits * targetPixelsPerUnit / zoom;
@@ -119,17 +118,8 @@ public class Camera {
 
     private void updateTransform() {
         drawToScreenTransform = new AffineTransform();
-
-        // As the texture is scaled from the top left corner, if zoom > 1 it will overshoot in size
-        // to the right and to the bottom. To avoid this, it is scaled from the center of the screen.
-//        drawToScreenTransform.translate(
-//                -0.5f * screenWidth * (zoom - 1),
-//                -0.5f * screenHeight * (zoom - 1));
-
         double scalingFactor = zoom * (screenPixelsPerUnit / actualPixelsPerUnit);
-        // double scalingFactor = targetPixelsPerUnit / actualPixelsPerUnit;
         drawToScreenTransform.scale(scalingFactor, scalingFactor);
-        // drawToScreenTransform = GraphicsHelper.IDENTITY_TX;
     }
 
     public void beginNextFrame() {
@@ -138,31 +128,10 @@ public class Camera {
 
     public void renderToScreen(BufferedImage screen) {
         Graphics2D g = (Graphics2D)screen.getGraphics();
+        
         // Copy the drawTexture to the screen
         g.setTransform(drawToScreenTransform);
-
-        if (main == this) {
-            System.out.println("" + drawWidth + " " + drawHeight);
-            System.out.println(topLeftPosition);
-        }
-
         g.drawImage(drawTexture, 0, 0, null);
-
-//        g.drawImage(
-//                drawTexture,
-//                // Destination rectangle
-//                0,
-//                0,
-//                screenWidth,
-//                screenHeight,
-//                // Source rectangle
-//                (int)(widthDiff / 2),
-//                (int)(heightDiff / 2),
-//                (int)(drawWidth + widthDiff / 2),
-//                (int)(drawHeight + heightDiff / 2),
-//                // Image observer (not needed)
-//                null
-//        );
     }
 
     public Vector2 worldToDrawPos(Vector2 worldPos) {
