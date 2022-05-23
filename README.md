@@ -8,6 +8,8 @@ A zero dependency, lightweight Java game engine for making 2D games inspired by 
 
 - Scene management
 
+- Time management (cap FPS, delta time, ...)
+
 - 2d Camera system
 
 - Keyboard and Mouse APIs
@@ -23,6 +25,64 @@ A zero dependency, lightweight Java game engine for making 2D games inspired by 
 ## Component-based architecture
 
 Similarly to Unity, most objects (entities) in your game are represented by GameObjects. They themselves don't generally implement behaviour (such as rendering or collision handling), but they instead act as a container for components. Each feature / functionality an object should have is implemented in a separate component.
+
+```java
+GameObject go = new GameObject();
+go.addComponent(new Transform());
+```
+
+Creating custom components:
+
+```java
+public class PlayerController extends Component implements IUpdatable {
+    private Transform transform;
+
+    @Override
+    public void onStart() {
+        System.out.println("Just added to a GameObject");
+        transform = (Transform)getComponent(Transform.class);
+    }
+
+    @Override
+    public void onUpdate() {
+        // Moves the player with the speed of 1 unit per second to the right
+        transform.setPosition(
+            transform.getPosition().add(1, 0).mul(Time.deltaTime())
+        );
+    }
+}
+```
+
+Adding your custom component:
+
+```java
+// Adding a component instantly registers it in the game event loop
+go.addComponent(new PlayerController());
+```
+
+Removing components:
+
+```java
+Transform transform = (Transform)go.getComponent(Transform.class);
+go.removeComponent(transform);
+```
+
+Destroying a GameObject:
+
+```java
+// This removes the GameObject and its components from the game loop
+go.destroy();
+```
+
+Most of the GameObject's method are also wrapped inside the `Component` class, meaning that you can directly use methods such as `addComponent`, `getComponent`, `hasComponent`, `removeComponent` from within a component and don't have to explicitly call them on the GameObject.
+
+GameObjects also let you add tags:
+
+```java
+go.addTag("Player");
+boolean hasTag = go.hasTag("Player");
+go.removeTag("Player");
+```
 
 ## Input
 

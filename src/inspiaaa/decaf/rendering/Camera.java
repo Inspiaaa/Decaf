@@ -75,6 +75,7 @@ public class Camera {
 
         updateViewedPartOfTexture();
         updateTopLeftPos();
+        updateTransform();
     }
 
     private void updateTopLeftPos() {
@@ -112,8 +113,6 @@ public class Camera {
                 (int)Math.ceil(drawHeight)
         );
         drawGraphics = (Graphics2D)drawTexture.getGraphics();
-
-        updateTransform();
     }
 
     private void updateTransform() {
@@ -128,7 +127,7 @@ public class Camera {
 
     public void renderToScreen(BufferedImage screen) {
         Graphics2D g = (Graphics2D)screen.getGraphics();
-        
+
         // Copy the drawTexture to the screen
         g.setTransform(drawToScreenTransform);
         g.drawImage(drawTexture, 0, 0, null);
