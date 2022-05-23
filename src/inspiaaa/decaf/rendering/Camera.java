@@ -7,36 +7,58 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Camera {
+    /*
+    Camera - How it works and what it does:
+    The Camera class manages a texture that will be rendered to the screen and gives other class
+    enough information (such as pixels per unit, offset, ...) so that they can render the objects
+    properly.
+    To make the zoom operation as efficient as possible, the camera works in the following way:
+    Internally a texture is stored with screen resolution. If the camera is zoomed in, the sprites
+    can be drawn with the target pixels per unit on to this texture (only a part of it will actually
+    be visible and drawn to the screen).
+    If the camera is zoomed out too far, so that the size of the texture would actually have to be
+    increased in order to preserve the pixels per unit, it is kept at the screen resolution
+    (because a higher resolution texture couldn't be rendered to the screen without losses).
+    The actual pixels per unit therefore differ from the target pixels per unit.
+     */
     private static Camera main;
     private static Camera ui;
 
-    // Low resolution texture for drawing the pixel art,
-    // in order to maintain a retro art style and feel.
+    private BufferedImage screenTexture;
+    // "Subimage" of the part of the full screenTexture that is drawn to the screen.
+    // Its data is shared with the screenTexture
     private BufferedImage drawTexture;
+
     private Graphics2D drawGraphics;
 
-    private float pixelsPerUnit;
+    private float targetPixelsPerUnit;
     private float targetHeightInUnits;
 
     // Dynamically calculated after each resize
     private float screenPixelsPerUnit;
+    // Sometimes when the targetPixelsPerUnit can not be reached (e.g. when zoomed out too far)
+    // or when no targetPixelsPerUnit is given, the actual pixels per unit of the texture does not
+    // match the target pixels per unit.
+    private float actualPixelsPerUnit;
 
     // TODO: Introduce a boolean whether it should match the screen resolution
     // Then it should dynamically update the pixelsPerUnit to match the screen resolution
 
     private float zoom;
-    // Position of the top left corner of the camera
+    // Position of the top left corner of the camera's rendering field
     private Vector2 topLeftPosition;
     // Position of the center of the camera
     private Vector2 position;
 
     private int screenWidth;
     private int screenHeight;
+    private float drawWidth;
+    private float drawHeight;
 
     private AffineTransform drawToScreenTransform;
 
-    public Camera(float pixelsPerUnit, float targetHeightInUnits, int startWidth, int startHeight) {
-        this.pixelsPerUnit = pixelsPerUnit;
+    public Camera(float targetPixelsPerUnit, float targetHeightInUnits, int startWidth, int startHeight) {
+        this.targetPixelsPerUnit = targetPixelsPerUnit;
         this.targetHeightInUnits = targetHeightInUnits;
         this.zoom = 1;
         this.position = new Vector2();
@@ -48,26 +70,50 @@ public class Camera {
         screenWidth = width;
         screenHeight = height;
         screenPixelsPerUnit = screenHeight / targetHeightInUnits;
-        updateTopLeftPos();
 
-        updateTexture();
+        screenTexture = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        updateViewedPartOfTexture();
+        updateTopLeftPos();
     }
 
     private void updateTopLeftPos() {
         topLeftPosition = position.sub(
-                0.5f * screenWidth / screenPixelsPerUnit,
-                0.5f * screenHeight / screenPixelsPerUnit
+                0.5f * drawWidth / actualPixelsPerUnit,
+                0.5f * drawHeight / actualPixelsPerUnit
         );
     }
 
-    private void updateTexture() {
-        // Make the draw texture match the targetHeightInUnits.
-        float drawHeight = targetHeightInUnits * pixelsPerUnit;
-        // But make the width scale up to the aspect ratio of the actual screen.
-        float drawWidth = drawHeight * ((float)screenWidth / screenHeight);
-        drawTexture = new BufferedImage((int)drawWidth, (int)drawHeight, BufferedImage.TYPE_INT_ARGB);
+    private void updateViewedPartOfTexture() {
+        System.out.println("Recalc");
+        if (targetPixelsPerUnit != -1) {
+            // Make the draw texture match the targetHeightInUnits.
+            drawHeight = targetHeightInUnits * targetPixelsPerUnit / zoom;
+            // But make the width scale up to the aspect ratio of the actual screen.
+            drawWidth = drawHeight * ((float)screenWidth / screenHeight);
 
+            if (drawWidth > screenWidth) {
+                drawWidth = screenWidth;
+                drawHeight = screenHeight;
+            }
+        }
+        else {
+            drawWidth = screenWidth;
+            drawHeight = screenHeight;
+        }
+
+        actualPixelsPerUnit = drawHeight * zoom / targetHeightInUnits;
+
+        float widthDiff = screenWidth - drawWidth;
+        float heightDiff = screenHeight - drawHeight;
+        drawTexture = screenTexture.getSubimage(
+                (int)Math.floor(widthDiff / 2),   // x
+                (int)Math.floor(heightDiff / 2),  // y
+                (int)Math.ceil(drawWidth),
+                (int)Math.ceil(drawHeight)
+        );
         drawGraphics = (Graphics2D)drawTexture.getGraphics();
+
         updateTransform();
     }
 
@@ -76,12 +122,14 @@ public class Camera {
 
         // As the texture is scaled from the top left corner, if zoom > 1 it will overshoot in size
         // to the right and to the bottom. To avoid this, it is scaled from the center of the screen.
-        drawToScreenTransform.translate(
-                -0.5f * screenWidth * (zoom - 1),
-                -0.5f * screenHeight * (zoom - 1));
+//        drawToScreenTransform.translate(
+//                -0.5f * screenWidth * (zoom - 1),
+//                -0.5f * screenHeight * (zoom - 1));
 
-        double scalingFactor = zoom * (screenPixelsPerUnit / pixelsPerUnit);
+        double scalingFactor = zoom * (screenPixelsPerUnit / actualPixelsPerUnit);
+        // double scalingFactor = targetPixelsPerUnit / actualPixelsPerUnit;
         drawToScreenTransform.scale(scalingFactor, scalingFactor);
+        // drawToScreenTransform = GraphicsHelper.IDENTITY_TX;
     }
 
     public void beginNextFrame() {
@@ -92,11 +140,33 @@ public class Camera {
         Graphics2D g = (Graphics2D)screen.getGraphics();
         // Copy the drawTexture to the screen
         g.setTransform(drawToScreenTransform);
+
+        if (main == this) {
+            System.out.println("" + drawWidth + " " + drawHeight);
+            System.out.println(topLeftPosition);
+        }
+
         g.drawImage(drawTexture, 0, 0, null);
+
+//        g.drawImage(
+//                drawTexture,
+//                // Destination rectangle
+//                0,
+//                0,
+//                screenWidth,
+//                screenHeight,
+//                // Source rectangle
+//                (int)(widthDiff / 2),
+//                (int)(heightDiff / 2),
+//                (int)(drawWidth + widthDiff / 2),
+//                (int)(drawHeight + heightDiff / 2),
+//                // Image observer (not needed)
+//                null
+//        );
     }
 
     public Vector2 worldToDrawPos(Vector2 worldPos) {
-        return worldPos.sub(topLeftPosition).mul(pixelsPerUnit * zoom);
+        return worldPos.sub(topLeftPosition).mul(targetPixelsPerUnit * zoom);
     }
 
     public Vector2 screenToWorldPos(Vector2 screenPos) {
@@ -108,7 +178,7 @@ public class Camera {
     }
 
     public float worldToDrawLength(float lengthInWorld) {
-        return lengthInWorld * zoom * pixelsPerUnit;
+        return lengthInWorld * zoom * targetPixelsPerUnit;
     }
 
     public void setPosition(Vector2 position) {
@@ -126,7 +196,12 @@ public class Camera {
     }
 
     public void setZoom(float zoom) {
+        if (this.zoom == zoom) {
+            return;
+        }
+
         this.zoom = zoom;
+        updateViewedPartOfTexture();
         updateTopLeftPos();
         updateTransform();
     }
@@ -144,7 +219,7 @@ public class Camera {
     }
 
     public float getPixelsPerUnit() {
-        return pixelsPerUnit;
+        return actualPixelsPerUnit;
     }
 
 
