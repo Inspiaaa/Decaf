@@ -18,4 +18,17 @@ public class SpatialAudio {
         float distanceToCamera = (float) Math.sqrt(dx*dx + dy*dy + dz*dz);
         return dx / distanceToCamera;
     }
+
+    public static float getVolumeForWorldPos(Vector2 worldPos) {
+        return getVolumeForWorldPos(worldPos, 0.2f);
+    }
+
+    public static float getVolumeForWorldPos(Vector2 worldPos, float volumeDropOffSpeed) {
+        Vector2 cameraPos = Camera.main().getPosition();
+        float dx = worldPos.x - cameraPos.x;
+        float dy = worldPos.y - cameraPos.y;
+
+        float distanceToCamera = (float) Math.sqrt(dx*dx + dy*dy);
+        return (float) 1 / (1 + distanceToCamera * volumeDropOffSpeed);
+    }
 }
