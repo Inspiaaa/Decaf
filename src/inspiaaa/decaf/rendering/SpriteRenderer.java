@@ -50,10 +50,6 @@ public class SpriteRenderer extends Component implements IDrawable {
                 scale,
                 rotation,
                 sprite.getOrigin());
-
-        GraphicsHelper.resetTransform(g);
-        g.setColor(Color.RED);
-        g.drawRect((int)xInPixels, (int)yInPixels, 1, 1);
     }
 
     @Override
