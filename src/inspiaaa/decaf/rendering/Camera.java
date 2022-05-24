@@ -190,7 +190,13 @@ public class Camera {
         return actualPixelsPerUnit;
     }
 
+    public float getWidthInUnits() {
+        return drawWidth / actualPixelsPerUnit;
+    }
 
+    public float getHeightsInUnits() {
+        return drawHeight / actualPixelsPerUnit;
+    }
 
     public void markAsMain() {
         main = this;

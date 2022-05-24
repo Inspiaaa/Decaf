@@ -3,15 +3,15 @@
     #- Update the screen with this texture
     #- Resizing
     - Smooth scrolling
-    - UI texture
-    - Screen pos to draw pos
+    #- UI camera
+    #- Screen pos to draw pos
     - Better name for draw texture (world texture?)
     - Improved creation AffineTransform options
     - Add option to upsample to screen size
     - Add feature to make UI for a reference, virtual screen size (width, and height) (=> Match the
       screen height when upscaling, but stretch each x coordinate so that the width would match the screen width,
       => Scale x and y independently)
-    - Make the position the center of the viewing field
+    #- Make the position the center of the viewing field
     - Only render objects that are visible
 
 #- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
