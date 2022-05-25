@@ -11,9 +11,13 @@ import inspiaaa.decaf.rendering.Camera;
 import inspiaaa.decaf.rendering.Sprite;
 import inspiaaa.decaf.rendering.SpriteRenderer;
 import inspiaaa.decaf.sound.Music;
+import inspiaaa.decaf.sound.SoundEffect;
+import inspiaaa.decaf.sound.SoundEffectInstance;
+import inspiaaa.decaf.sound.SpatialAudio;
 
 public class ExampleScene extends Scene {
     private Music music;
+    private Sprite sprite = new Sprite("./Player.png", 16, Sprite.ORIGIN_BOTTOM_CENTER);
 
     @Override
     public void start(int width, int height) {
@@ -22,23 +26,42 @@ public class ExampleScene extends Scene {
 //        music = new Music("Level 1.wav");
 //        music.play();
 
-        Sprite sprite = new Sprite("./Player.png", 16, Sprite.ORIGIN_BOTTOM_CENTER);
         GameObject go = new GameObject();
         go.addComponent(new Transform(new Vector2(1, 2)));
         go.addComponent(new SpriteRenderer(sprite));
         go.addComponent(new ExampleComponent());
 
-        for (int i = 0; i < 20; i ++) {
-            GameObject g = new GameObject();
-            g.addComponent(new Transform(new Vector2(Random.range(-5f, 5f), Random.range(-5f, 5f))));
-            g.addComponent(new SpriteRenderer(sprite));
-            g.addComponent(new ExampleComponent());
-        }
+//        for (int i = 0; i < 20; i ++) {
+//            GameObject g = new GameObject();
+//            g.addComponent(new Transform(new Vector2(Random.range(-5f, 5f), Random.range(-5f, 5f))));
+//            g.addComponent(new SpriteRenderer(sprite));
+//            g.addComponent(new ExampleComponent());
+//        }
     }
+
+    private float lastSpawnTime;
+    private int spawnCount = 0;
 
     @Override
     public void update() {
         super.update();
+
+        if (Time.time() - lastSpawnTime > 0.5 && spawnCount < 5000 && Time.time() > 1) {
+            lastSpawnTime = Time.time();
+            spawnCount ++;
+
+            GameObject g = new GameObject();
+            Vector2 pos = new Vector2(Random.range(-5f, 5f), Random.range(-5f, 5f));
+            g.addComponent(new Transform(pos));
+            g.addComponent(new SpriteRenderer(sprite));
+            g.addComponent(new ExampleComponent());
+
+            SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
+            sfx.setMasterVolume(1);
+            SoundEffectInstance instance = sfx.play();
+            instance.setPan(SpatialAudio.getPanForWorldPos(pos));
+            instance.setVolume(SpatialAudio.getVolumeForWorldPos(pos));
+        }
 
         System.out.println(Time.getInstance().getFps());
 
@@ -60,10 +83,11 @@ public class ExampleScene extends Scene {
             cam.setPosition(cam.getPosition().add(moveSpeed * Time.deltaTime(), 0));
         }
 
-//        if (Mouse.isButtonJustDown(1)) {
-//            SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
-//            sfx.setMasterVolume(1);
-//            sfx.play();
+        if (Mouse.isButtonJustDown(1)) {
+            SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
+            sfx.setMasterVolume(1);
+            SoundEffectInstance instance = sfx.play();
+            instance.setPan(SpatialAudio.getPanForWorldPos(Camera.main().screenToWorldPos(Mouse.getPosition())));
 //
 //            if (music.isPlaying()) {
 //                music.pause();
@@ -71,6 +95,6 @@ public class ExampleScene extends Scene {
 //            else {
 //                // music.resume();
 //                music.play();
-//            }
+            }
     }
 }
