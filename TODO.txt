@@ -41,8 +41,9 @@
     #- Rename Sound to SoundEffect
     #- Music class for long sound files that need to be streamed from a file (with pause method for stopping without closing)
     (https://docs.oracle.com/javase/8/docs/technotes/guides/sound/programmer_guide/chapter4.html)
-    - 3D Sound System (pan and volume)
+    #- 3D Sound System (pan and volume)
     - Add close methods for Music, SoundEffect and SoundEffectInstance
+    - Add pan to Music
 
 - Graphics Helper for drawing images
 
@@ -84,3 +85,5 @@
 - Resources class for accessing files in a dedicated resources / assets folder
 
 - Optimise imports
+
+- 2d light system (alpha based masks without shadows)
