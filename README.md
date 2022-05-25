@@ -47,7 +47,7 @@ public class PlayerController extends Component implements IUpdatable {
     public void onUpdate() {
         // Moves the player with the speed of 1 unit per second to the right
         transform.setPosition(
-            transform.getPosition().add(1 * Time.deltaTime(), 0)
+            transform.getPosition().add(1, 0).mul(Time.deltaTime())
         );
     }
 }
@@ -137,6 +137,8 @@ There are two types of sounds:
 
 - **Music** is for longer clips of sound that are too large to be loaded into memory at once. E.g. music (40MB), long voice lines, ... The music data is then streamed from the disk into memory as it is needed. This type of sound is represented by the `Music` class.
 
+On top of this, the pan and volume can be adjusted to make the audio sound 3d. These values can be calculated using the `SpatialAudio` class.
+
 ### Using sound effects
 
 At the beginning of the game, when you load all your assets, you can create a new `SoundEffect` instance, passing in a file path:
@@ -196,4 +198,20 @@ music.pause();
 
 // Continues playing
 music.resume();
+```
+
+### Spatial Audio
+
+The `SpatialAudio` class provides some methods for setting the pan (the left-right positioning of the audio) and setting the volume of sound effects to achieve a quasi-3d experience.
+
+By default is uses the `Camera.main()` to get the main camera which is assumed be the audio listener in the scene.
+
+```java
+Vector2 pos = new Vector2(0.5f, 2);
+float pan = SpatialAudio.getPanForWorldPos(pos);
+float volume = SpatialAudio.getVolumeForWorldPos(pos);
+
+// sfx is a SoundEffectInstance
+sfx.setPan(pan);
+sfx.setVolume(volume);
 ```
