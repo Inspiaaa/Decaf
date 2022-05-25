@@ -54,14 +54,14 @@ public class Vector2 {
     }
 
     // In place
-    public Vector2 addIn(Vector2 other) {
+    public Vector2 addi(Vector2 other) {
         this.x += other.x;
         this.y += other.y;
         return this;
     }
 
     // In place
-    public Vector2 addIn(float x, float y) {
+    public Vector2 addi(float x, float y) {
         this.x += x;
         this.y += y;
         return this;
@@ -76,14 +76,14 @@ public class Vector2 {
     }
 
     // In place
-    public Vector2 subIn(Vector2 other) {
+    public Vector2 subi(Vector2 other) {
         this.x -= other.x;
         this.y -= other.y;
         return this;
     }
 
     // In place
-    public Vector2 subIn(float x, float y) {
+    public Vector2 subi(float x, float y) {
         this.x -= x;
         this.y -= y;
         return this;
@@ -94,7 +94,7 @@ public class Vector2 {
     }
 
     // In place
-    public Vector2 mulIn(float factor) {
+    public Vector2 muli(float factor) {
         this.x *= factor;
         this.y *= factor;
         return this;
@@ -105,7 +105,7 @@ public class Vector2 {
     }
 
     // In place
-    public Vector2 divIn(float divisor) {
+    public Vector2 divi(float divisor) {
         this.x /= divisor;
         this.y /= divisor;
         return this;
@@ -141,7 +141,6 @@ public class Vector2 {
     public int hashCode() {
         return Objects.hash(x, y);
     }
-
 
     @Override
     public String toString() {

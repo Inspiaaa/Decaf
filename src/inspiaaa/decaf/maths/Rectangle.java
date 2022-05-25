@@ -36,7 +36,7 @@ public class Rectangle {
     }
 
     public float getTop() {
-        return y;
+        return y + height;
     }
 
     public float getRight() {
@@ -44,7 +44,7 @@ public class Rectangle {
     }
 
     public float getBottom() {
-        return y + height;
+        return y;
     }
 
     public float getCenterX() {
