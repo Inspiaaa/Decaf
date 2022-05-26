@@ -1,9 +1,16 @@
 package inspiaaa.decaf.collision;
 
+import inspiaaa.decaf.maths.Rectangle;
+import inspiaaa.decaf.maths.Vector2;
+
 import java.util.ArrayList;
 
 public class Chunk {
     private final ArrayList<RectCollider> entities;
+
+    public Chunk() {
+        entities = new ArrayList<RectCollider>();
+    }
 
     public void addEntity(RectCollider collider) {
         entities.add(collider);
@@ -24,7 +31,25 @@ public class Chunk {
         entities.remove(lastIndex);
     }
 
-    public Chunk() {
-        entities = new ArrayList<RectCollider>();
+    // TODO: Respect LayerMask
+
+    // Returns the valid deltaPos for moving the collider.
+    public Vector2 moveAndCollide(Rectangle collider, Vector2 deltaPos) {
+        Vector2 validDeltaPos = deltaPos.copy();
+
+        Rectangle movedCollider = collider.copy();
+
+        // This algorithm assumes that its initial state was valid
+
+        for (RectCollider other : entities) {
+            // Try to execute the movement. If it does collide, slide along the collider and then calculate
+            // a new, valid motion from this collision, which is then used for every next collider.
+            movedCollider.setPosition(collider.x, collider.y);
+            movedCollider.moveAndCollide(validDeltaPos, other.getMovedCollider());
+            validDeltaPos.x = movedCollider.x - collider.x;
+            validDeltaPos.y = movedCollider.y - collider.y;
+        }
+
+        return validDeltaPos;
     }
 }

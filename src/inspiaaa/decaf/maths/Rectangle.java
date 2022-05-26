@@ -31,6 +31,55 @@ public class Rectangle {
                 && getBottom() < other.getTop();
     }
 
+    public void moveAndCollide(Vector2 deltaPos, Rectangle other) {
+        move(deltaPos);
+
+        if (!intersects(other)) {
+            return;
+        }
+
+        float overlapWidth = (deltaPos.x > 0)
+                ? (getRight() - other.getLeft())    // When moving right
+                : (other.getRight() - getLeft());   // When moving left
+
+        float overlapHeight = (deltaPos.y > 0)
+                ? (getTop() - other.getBottom())    // When moving up
+                : (other.getTop() - getBottom());   // When moving down
+
+        // Resolve the collision by moving the least possible distance in either x direction
+        // or y direction
+        if (overlapWidth < overlapHeight) {
+            x -= overlapWidth * Math.signum(deltaPos.x);
+        }
+        else {
+            y -= overlapHeight * Math.signum(deltaPos.y);
+        }
+    }
+
+    public void move(Vector2 deltaPos) {
+        x += deltaPos.x;
+        y += deltaPos.y;
+    }
+
+    public void move(float x, float y) {
+        this.x += x;
+        this.y += y;
+    }
+
+    public void setPosition(Vector2 pos) {
+        x = pos.x;
+        y = pos.y;
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(x, y);
+    }
+
     public float getLeft() {
         return x;
     }
@@ -53,6 +102,10 @@ public class Rectangle {
 
     public float getCenterY() {
         return y + height / 2;
+    }
+
+    public Rectangle copy() {
+        return new Rectangle(x, y, width, height);
     }
 
     @Override

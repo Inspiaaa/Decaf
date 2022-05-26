@@ -11,7 +11,7 @@ public class SpatialAudio {
 
     public static float getPanForWorldPos(Vector2 worldPos, float cameraZ) {
         Vector2 cameraPos = Camera.main().getPosition();
-        return getVolumeForWorldPos(worldPos, cameraZ, cameraPos);
+        return getPanForWorldPos(worldPos, cameraZ, cameraPos);
     }
 
     public static float getPanForWorldPos(Vector2 worldPos, float cameraZ, Vector2 cameraPos) {

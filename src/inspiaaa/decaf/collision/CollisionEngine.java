@@ -54,35 +54,47 @@ public class CollisionEngine {
     // TODO: Idea: Make these methods independent of RectCollider (but keep an ease of use overload
     // for RectCollider)
 
-    private void addEntity(RectCollider collider) {
-        for (Vector2Int chunkPos : getChunksUnderRectangle(collider.getMovedCollider())) {
+    // TODO: Respect LayerMask
+
+    private void addEntity(RectCollider entity) {
+        for (Vector2Int chunkPos : getChunksUnderRectangle(entity.getMovedCollider())) {
             Chunk chunk = chunksByPos.get(chunkPos);
-            chunk.addEntity(collider);
+            chunk.addEntity(entity);
         }
     }
 
-    private void removeEntity(RectCollider collider) {
-        for (Vector2Int chunkPos : getChunksUnderRectangle(collider.getMovedCollider())) {
+    private void removeEntity(RectCollider entity) {
+        for (Vector2Int chunkPos : getChunksUnderRectangle(entity.getMovedCollider())) {
             Chunk chunk = chunksByPos.get(chunkPos);
-            chunk.removeEntity(collider);
+            chunk.removeEntity(entity);
         }
     }
 
-    private void moveEntity(RectCollider collider) {
-        // Remove the entity from the previous chunks
-        // Move the entity
-        // Add the entity to the new chunks
+    private void moveEntity(RectCollider entity, Vector2 targetPos) {
+        removeEntity(entity);
+        entity.setPosition(targetPos);
+        addEntity(entity);
     }
 
-    private void moveAndCollideEntity(RectCollider collider) {
-        // Remove the entity from the chunks
+    private void moveAndCollideEntity(RectCollider entity, Vector2 targetPos) {
+        removeEntity(entity);
 
-        // Move the entity and resolve collisions
-        // Assume that its initial state was valid
-        // For each other collider, try the movement and if it does collide, try to resolve the collision:
-        // Create a new movement, that slides along the object (if it can) and then check this
-        // new valid motion for every next collider
+        Rectangle originalCollider = entity.getMovedCollider();
+        Rectangle colliderInTargetPos = originalCollider.copy();
+        colliderInTargetPos.setPosition(targetPos);
 
-        // Add the entity to the chunks again
+        Vector2 deltaPos = targetPos.sub(originalCollider.getPosition());
+
+        for (Vector2Int chunkPos : getChunksUnderRectangle(colliderInTargetPos)) {
+            Chunk chunk = chunksByPos.get(chunkPos);
+            deltaPos = chunk.moveAndCollide(colliderInTargetPos, deltaPos);
+        }
+
+        entity.setPosition(entity.getPosition().add(deltaPos));
+        addEntity(entity);
+    }
+
+    public void detectCollisions(Rectangle rect, RectCollider[] entities) {
+        // TODO
     }
 }
