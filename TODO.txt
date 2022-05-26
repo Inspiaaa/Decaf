@@ -21,6 +21,8 @@
 - Collision engine
   - Detect collisions
   - Resolve collisions
+  - Support layers
+  - Add CollisionEngine to the Scene class
 
 #- Rendering with SpriteRenderer
     #- Scaling
@@ -86,4 +88,8 @@
 
 - Optimise imports
 
+- Optimise rendering pipeline (less intermediate images)
+
 - 2d light system (alpha based masks without shadows)
+
+- Improve formatting: Add space when casting (int)x => (int) x
