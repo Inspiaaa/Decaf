@@ -11,6 +11,8 @@ public class SceneManager {
     private int screenWidth = 1;
     private int screenHeight = 1;
 
+    private boolean hasStarted = false;
+
     public void start(int width, int height) {
         screenWidth = width;
         screenHeight = height;
@@ -18,6 +20,8 @@ public class SceneManager {
         if (activeScene != null) {
             activeScene.start(width, height);
         }
+
+        hasStarted = true;
     }
 
     public void update() {
@@ -42,7 +46,10 @@ public class SceneManager {
         }
 
         activeScene = newScene;
-        newScene.start(screenWidth, screenHeight);
+
+        if (hasStarted) {
+            newScene.start(screenWidth, screenHeight);
+        }
     }
 
     public IScene getActiveScene() {
