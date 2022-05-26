@@ -1,5 +1,6 @@
 package inspiaaa.decaf;
 
+import inspiaaa.decaf.collision.CollisionEngine;
 import inspiaaa.decaf.events.IDrawable;
 import inspiaaa.decaf.events.IUpdatable;
 import inspiaaa.decaf.input.Keyboard;
@@ -16,9 +17,11 @@ import java.util.HashSet;
 public class Scene implements IScene {
     private Camera worldCamera;
     private Camera uiCamera;
+    private final CollisionEngine collisionEngine;
 
     private float pixelsPerUnit = 16;
     private float cameraSize = 8;
+    private float collisionEngineChunkSize = 5;
 
     private Color backgroundColor;
     private BufferedImage screen;
@@ -30,8 +33,9 @@ public class Scene implements IScene {
     public Scene() {
         this.objectsToUpdate = new HashSet<IUpdatable>();
         this.objectsToDraw = new HashSet<IDrawable>();
+        this.collisionEngine = new CollisionEngine(collisionEngineChunkSize);
 
-        backgroundColor = Color.WHITE;
+        this.backgroundColor = Color.WHITE;
     }
 
     @Override
@@ -116,5 +120,9 @@ public class Scene implements IScene {
     public void unregister(Object obj) {
         if (obj instanceof IUpdatable) objectsToUpdate.remove((IUpdatable)obj);
         if (obj instanceof IDrawable) objectsToDraw.remove((IDrawable)obj);
+    }
+
+    public CollisionEngine getCollisionEngine() {
+        return collisionEngine;
     }
 }

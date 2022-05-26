@@ -1,5 +1,7 @@
 package inspiaaa.decaf.gameobject;
 
+import inspiaaa.decaf.Scene;
+
 public class Component {
     protected GameObject gameObject;
 
@@ -47,5 +49,9 @@ public class Component {
 
     public void removeTag(String tag) {
         gameObject.removeTag(tag);
+    }
+
+    public Scene getScene() {
+        return gameObject.getScene();
     }
 }

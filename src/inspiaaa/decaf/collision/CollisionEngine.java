@@ -56,38 +56,51 @@ public class CollisionEngine {
 
     // TODO: Respect LayerMask
 
-    private void addEntity(RectCollider entity) {
+    private Chunk ensureChunkExists(Vector2Int chunkPos) {
+        Chunk chunk = chunksByPos.get(chunkPos);
+        if (chunk == null) {
+            chunk = new Chunk();
+            chunksByPos.put(chunkPos, chunk);
+        }
+        return chunk;
+    }
+
+    public void addEntity(RectCollider entity) {
         for (Vector2Int chunkPos : getChunksUnderRectangle(entity.getMovedCollider())) {
-            Chunk chunk = chunksByPos.get(chunkPos);
+            Chunk chunk = ensureChunkExists(chunkPos);
             chunk.addEntity(entity);
         }
     }
 
-    private void removeEntity(RectCollider entity) {
+    public void removeEntity(RectCollider entity) {
         for (Vector2Int chunkPos : getChunksUnderRectangle(entity.getMovedCollider())) {
             Chunk chunk = chunksByPos.get(chunkPos);
-            chunk.removeEntity(entity);
+            if (chunk != null) {
+                chunk.removeEntity(entity);
+            }
         }
     }
 
-    private void moveEntity(RectCollider entity, Vector2 targetPos) {
+    public void moveEntity(RectCollider entity, Vector2 targetPos) {
         removeEntity(entity);
         entity.setPosition(targetPos);
         addEntity(entity);
     }
 
-    private void moveAndCollideEntity(RectCollider entity, Vector2 targetPos) {
+    public void moveAndCollideEntity(RectCollider entity, Vector2 targetPos) {
         removeEntity(entity);
+
+        Vector2 deltaPos = targetPos.sub(entity.getPosition());
 
         Rectangle originalCollider = entity.getMovedCollider();
         Rectangle colliderInTargetPos = originalCollider.copy();
-        colliderInTargetPos.setPosition(targetPos);
-
-        Vector2 deltaPos = targetPos.sub(originalCollider.getPosition());
+        colliderInTargetPos.move(deltaPos);
 
         for (Vector2Int chunkPos : getChunksUnderRectangle(colliderInTargetPos)) {
             Chunk chunk = chunksByPos.get(chunkPos);
-            deltaPos = chunk.moveAndCollide(colliderInTargetPos, deltaPos);
+            if (chunk != null) {
+                deltaPos = chunk.moveAndCollide(originalCollider, deltaPos);
+            }
         }
 
         entity.setPosition(entity.getPosition().add(deltaPos));
