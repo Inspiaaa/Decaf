@@ -68,7 +68,7 @@ public class Vector2 {
     }
 
     public Vector2 sub(Vector2 other) {
-        return new Vector2(x + other.x, y + other.y);
+        return new Vector2(x - other.x, y - other.y);
     }
 
     public Vector2 sub(float x, float y) {
