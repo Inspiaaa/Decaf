@@ -1,3 +1,6 @@
+package examples.sound;
+
+import examples.sound.ExampleComponent;
 import inspiaaa.decaf.Scene;
 import inspiaaa.decaf.Time;
 import inspiaaa.decaf.Transform;
@@ -35,7 +38,7 @@ public class ExampleScene extends Scene {
 //            GameObject g = new GameObject();
 //            g.addComponent(new Transform(new Vector2(Random.range(-5f, 5f), Random.range(-5f, 5f))));
 //            g.addComponent(new SpriteRenderer(sprite));
-//            g.addComponent(new ExampleComponent());
+//            g.addComponent(new examples.sound.ExampleComponent());
 //        }
     }
 

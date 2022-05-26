@@ -1,3 +1,5 @@
+package examples.sound;
+
 import inspiaaa.decaf.Time;
 import inspiaaa.decaf.Transform;
 import inspiaaa.decaf.gameobject.Component;

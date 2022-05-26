@@ -1,4 +1,4 @@
-import inspiaaa.decaf.Scene;
+import examples.sound.ExampleScene;
 import inspiaaa.decaf.main.GameApplication;
 import inspiaaa.decaf.main.SceneManager;
 
