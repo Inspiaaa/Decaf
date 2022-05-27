@@ -19,6 +19,8 @@ public class RectCollider extends Component implements IPositionListener {
     private int layerMask;
     private boolean isUpdatingPosition;
 
+    // FIXME: Problem: the target position is the same as getPosition()!
+
     public RectCollider(Rectangle collider) {
         this.collider = collider;
         this.movedCollider = collider.copy();

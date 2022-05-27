@@ -1,3 +1,4 @@
+import examples.bullets.BulletExampleScene;
 import examples.collisions.CollisionExampleScene;
 import examples.sound.ExampleScene;
 import inspiaaa.decaf.main.GameApplication;
@@ -8,7 +9,7 @@ public class Main {
 	    System.out.println("Hello world");
 
 		GameApplication app = new GameApplication();
-		SceneManager.getInstance().setActiveScene(new CollisionExampleScene());
+		SceneManager.getInstance().setActiveScene(new BulletExampleScene());
 		app.start();
     }
 }

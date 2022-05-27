@@ -7,6 +7,7 @@ import inspiaaa.decaf.input.Keyboard;
 import inspiaaa.decaf.input.Mouse;
 import inspiaaa.decaf.rendering.Camera;
 import inspiaaa.decaf.rendering.GraphicsHelper;
+import inspiaaa.decaf.util.ObjectPool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -27,11 +28,13 @@ public class Scene implements IScene {
     private BufferedImage screen;
 
     // Events
-    private final HashSet<IUpdatable> objectsToUpdate;
+    // If the number of objects can change during iteration, it uses the custom ObjectPool class
+    // which is similar to a HashSet, but allows for mutations during iteration.
+    private final ObjectPool<IUpdatable> objectsToUpdate;
     private final HashSet<IDrawable> objectsToDraw;
 
     public Scene() {
-        this.objectsToUpdate = new HashSet<IUpdatable>();
+        this.objectsToUpdate = new ObjectPool<IUpdatable>();
         this.objectsToDraw = new HashSet<IDrawable>();
         this.collisionEngine = new CollisionEngine(collisionEngineChunkSize);
 
@@ -72,12 +75,14 @@ public class Scene implements IScene {
 
     // Calls the onUpdate method of all objects that have subscribed to this event.
     private void dispatchOnUpdate() {
+        objectsToUpdate.lock();
         for (IUpdatable obj : objectsToUpdate) {
             try {
                 obj.onUpdate();
             }
             catch (Exception e) { e.printStackTrace(); }
         }
+        objectsToUpdate.unlock();
     }
 
     // Calls the onDraw method of all objects that have subscribed to this event.
