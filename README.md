@@ -107,13 +107,11 @@ Keyboard.isKeyJustUp(Keys.SPACE);
 Mouse buttons:
 
 ```java
-Mouse.isButtonDown(1);
-// Same as:
-Mouse.isButtonDown(MouseButtons.BUTTON1);
+Mouse.isButtonDown(MouseButtons.LEFT);
 
-Mouse.isButtonJustDown(MouseButtons.BUTTON1);
+Mouse.isButtonJustDown(MouseButtons.MIDDLE);
 
-Mouse.istButtonJustUp(MouseButtons.BUTTON1);
+Mouse.istButtonJustUp(MouseButtons.RIGHT);
 ```
 
 Mouse wheel:
