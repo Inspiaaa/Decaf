@@ -32,10 +32,6 @@ public class Rectangle {
     }
 
     public void pushOutOf(Rectangle other) {
-        float overlapWidth = Math.min(
-                getRight() - other.getLeft(),
-                other.getRight() - getLeft()
-        );
         float dxToMoveLeft = -(getRight() - other.getLeft());
         float dxToMoveRight = other.getRight() - getLeft();
         float minDx = Math.abs(dxToMoveLeft) < Math.abs(dxToMoveRight) ? dxToMoveLeft : dxToMoveRight;
@@ -80,8 +76,6 @@ public class Rectangle {
         else {
             y -= overlapHeight * Math.signum(deltaPos.y);
         }
-
-        System.out.println("Width " + overlapWidth + " height " + overlapHeight);
     }
 
     public void move(Vector2 deltaPos) {

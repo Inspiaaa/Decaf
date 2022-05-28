@@ -49,18 +49,10 @@ public class Chunk {
             // Try to execute the movement. If it does collide, slide along the collider and then calculate
             // a new, valid motion from this collision, which is then used for every next collider.
             movedCollider.setPosition(collider.x, collider.y);
-
-            if (other.getMovedCollider().intersects(movedCollider)) {
-                System.out.println("Collision");
-            }
-
             movedCollider.moveAndCollide(validDeltaPos, other.getMovedCollider());
 
             validDeltaPos.x = movedCollider.x - collider.x;
             validDeltaPos.y = movedCollider.y - collider.y;
-//            movedCollider.setPosition(collider.getPosition().add(validDeltaPos));
-//            movedCollider.pushOutOf(other.getMovedCollider());
-            System.out.println("Valid x " + validDeltaPos.x + " y " + validDeltaPos.y);
         }
 
         return validDeltaPos;

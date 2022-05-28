@@ -39,10 +39,10 @@ public class CollisionExampleScene extends Scene {
             System.out.println("Hello");
         }
 
-//        Vector2 mousePos = Camera.main().screenToWorldPos(Mouse.getPosition());
-//        RectCollider[] hits = new RectCollider[5];
-//        int count = getCollisionEngine().detectCollisions(mousePos, hits);
-//        System.out.println(count);
+        Vector2 mousePos = Camera.main().screenToWorldPos(Mouse.getPosition());
+        RectCollider[] hits = new RectCollider[5];
+        int count = getCollisionEngine().detectCollisions(mousePos, hits);
+        System.out.println(count + " object(s) under mouse");
 
         super.update();
     }

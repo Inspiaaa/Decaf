@@ -47,6 +47,7 @@ public class RectCollider extends Component implements IPositionListener {
     public void onPositionChange(Vector2 newPos) {
         if (isUpdatingPosition) return;
 
+        // TODO: Call teleportTo() instead
         moveTo(newPos);
     }
 
