@@ -6,7 +6,9 @@ import inspiaaa.decaf.collision.RectCollider;
 import inspiaaa.decaf.gameobject.GameObject;
 import inspiaaa.decaf.input.Keyboard;
 import inspiaaa.decaf.input.Keys;
+import inspiaaa.decaf.input.Mouse;
 import inspiaaa.decaf.maths.Vector2;
+import inspiaaa.decaf.rendering.Camera;
 import inspiaaa.decaf.rendering.Sprite;
 import inspiaaa.decaf.rendering.SpriteRenderer;
 
@@ -34,6 +36,11 @@ public class CollisionExampleScene extends Scene {
         if (Keyboard.isKeyJustDown(Keys.SPACE)) {
             System.out.println("Hello");
         }
+
+        Vector2 mousePos = Camera.main().screenToWorldPos(Mouse.getPosition());
+        RectCollider[] hits = new RectCollider[5];
+        int count = getCollisionEngine().detectCollisions(mousePos, hits);
+        System.out.println(count);
 
         super.update();
     }

@@ -17,6 +17,8 @@
 #- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
 
 - Call start (component) at the beginning of the next frame and not directly
+- Call onDestroy after onUpdate / onDraw / ... => Make Component an IDestroyable and in GameObject register
+  the component for the destroy loop
 
 - Collision engine
   - Detect collisions

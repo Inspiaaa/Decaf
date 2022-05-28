@@ -107,6 +107,22 @@ public class CollisionEngine {
         addEntity(entity);
     }
 
+    public int detectCollisions(Vector2 pos, RectCollider[] entities) {
+        Vector2Int chunkPos = pointToChunkPos(pos);
+        Chunk chunk = chunksByPos.get(chunkPos);
+        int count = 0;
+
+        if (chunk != null) {
+            for (RectCollider entity : chunk.getRawEntities()) {
+                if (entity.getMovedCollider().contains(pos)) {
+                    entities[count++] = entity;
+                }
+            }
+        }
+
+        return count;
+    }
+
     public void detectCollisions(Rectangle rect, RectCollider[] entities) {
         // TODO
     }

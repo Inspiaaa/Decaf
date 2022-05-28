@@ -9,7 +9,7 @@ public class Main {
 	    System.out.println("Hello world");
 
 		GameApplication app = new GameApplication();
-		SceneManager.getInstance().setActiveScene(new BulletExampleScene());
+		SceneManager.getInstance().setActiveScene(new CollisionExampleScene());
 		app.start();
     }
 }

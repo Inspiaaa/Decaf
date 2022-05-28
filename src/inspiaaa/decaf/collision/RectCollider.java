@@ -2,7 +2,6 @@ package inspiaaa.decaf.collision;
 
 import inspiaaa.decaf.IPositionListener;
 import inspiaaa.decaf.Transform;
-import inspiaaa.decaf.events.IUpdatable;
 import inspiaaa.decaf.gameobject.Component;
 import inspiaaa.decaf.maths.Rectangle;
 import inspiaaa.decaf.maths.Vector2;
@@ -13,6 +12,7 @@ public class RectCollider extends Component implements IPositionListener {
 
     // Base collider
     private Rectangle collider;
+    private Vector2 lastPosition;
     // Collider that has been moved in world space
     private Rectangle movedCollider;
 
@@ -31,8 +31,10 @@ public class RectCollider extends Component implements IPositionListener {
     public void onStart() {
         collisionEngine = getScene().getCollisionEngine();
         transform = (Transform) getComponent(Transform.class);
-
         transform.addPositionListener(this);
+
+        lastPosition = transform.getPosition();
+        updateMovedCollider();
         collisionEngine.addEntity(this);
     }
 
@@ -63,19 +65,27 @@ public class RectCollider extends Component implements IPositionListener {
     }
 
     protected void setPosition(Vector2 position) {
-        if (isUpdatingPosition) return;
+        if (isUpdatingPosition) {
+            return;
+        }
+
         isUpdatingPosition = true;
         try {
-            movedCollider.setPosition(collider.getPosition().add(position));
+            updateMovedCollider();
             transform.setPosition(position);
+            this.lastPosition = position;
         }
         finally {
             isUpdatingPosition = false;
         }
     }
 
+    private void updateMovedCollider() {
+        movedCollider.setPosition(collider.getPosition().add(lastPosition));
+    }
+
     protected Vector2 getPosition() {
-        return transform.getPosition();
+         return lastPosition;
     }
 
     public Rectangle getMovedCollider() {

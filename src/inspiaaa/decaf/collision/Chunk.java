@@ -12,6 +12,10 @@ public class Chunk {
         entities = new ArrayList<RectCollider>();
     }
 
+    public ArrayList<RectCollider> getRawEntities() {
+        return entities;
+    }
+
     public void addEntity(RectCollider collider) {
         entities.add(collider);
     }

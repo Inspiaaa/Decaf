@@ -31,10 +31,36 @@ public class Rectangle {
                 && getBottom() < other.getTop();
     }
 
+    public void pushOutOf(Rectangle other) {
+        float overlapWidth = Math.min(
+                getRight() - other.getLeft(),
+                other.getRight() - getLeft()
+        );
+        float dxToMoveLeft = -(getRight() - other.getLeft());
+        float dxToMoveRight = other.getRight() - getLeft();
+        float minDx = Math.abs(dxToMoveLeft) < Math.abs(dxToMoveRight) ? dxToMoveLeft : dxToMoveRight;
+
+        float dyToMoveDown = -(other.getTop() - getBottom());
+        float dyToMoveUp = other.getTop() - getBottom();
+        float minDy = Math.abs(dyToMoveDown) < Math.abs(dyToMoveUp) ? dyToMoveDown : dyToMoveUp;
+
+        if (Math.abs(minDx) < Math.abs(minDy)) {
+            x += minDx;
+        }
+        else {
+            y += minDy;
+        }
+    }
+
     public void moveAndCollide(Vector2 deltaPos, Rectangle other) {
         move(deltaPos);
 
         if (!intersects(other)) {
+            return;
+        }
+
+        if (deltaPos.isZero()) {
+            pushOutOf(other);
             return;
         }
 
