@@ -6,23 +6,25 @@ A zero dependency, lightweight Java game engine for making 2D games inspired by 
 
 **Features:**
 
-- GameObjects and Components
+- **GameObjects** and **Components**
 
-- Scene management
+- **Scene** management
 
-- Time management (cap FPS, delta time, ...)
+- **Time** management (cap FPS, delta time, ...)
 
-- 2d Camera system
+- 2d **Camera** system
 
-- Keyboard and Mouse APIs
+- **Keyboard** and **Mouse** APIs
 
-- Sound handling for music and sound effects
+- **Sound** handling for music and sound effects
+
+- 2d **collision detection** and **resolution** engine for axis-aligned rectangles (with support for layers)
 
 - Maths
   
-  - Vector2 type
+  - **Vector2** type
   
-  - Easy to use Random utility
+  - Easy to use **Random** utility
 
 ## Component-based architecture
 
