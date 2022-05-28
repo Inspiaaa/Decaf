@@ -24,11 +24,13 @@ public class CollisionExampleScene extends Scene {
         player.addComponent(new SpriteRenderer(sprite));
         player.addComponent(new PlayerController());
         player.addComponent(new RectCollider(sprite.getWorldBounds()));
+        player.addComponent(new DrawCollider());
 
         GameObject other = new GameObject();
-        other.addComponent(new Transform(new Vector2(2, 2)));
+        other.addComponent(new Transform(new Vector2(1, 1)));
         other.addComponent(new SpriteRenderer(sprite));
         other.addComponent(new RectCollider(sprite.getWorldBounds()));
+        other.addComponent(new DrawCollider());
     }
 
     @Override
@@ -37,10 +39,10 @@ public class CollisionExampleScene extends Scene {
             System.out.println("Hello");
         }
 
-        Vector2 mousePos = Camera.main().screenToWorldPos(Mouse.getPosition());
-        RectCollider[] hits = new RectCollider[5];
-        int count = getCollisionEngine().detectCollisions(mousePos, hits);
-        System.out.println(count);
+//        Vector2 mousePos = Camera.main().screenToWorldPos(Mouse.getPosition());
+//        RectCollider[] hits = new RectCollider[5];
+//        int count = getCollisionEngine().detectCollisions(mousePos, hits);
+//        System.out.println(count);
 
         super.update();
     }

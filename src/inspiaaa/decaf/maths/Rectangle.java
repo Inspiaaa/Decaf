@@ -80,6 +80,8 @@ public class Rectangle {
         else {
             y -= overlapHeight * Math.signum(deltaPos.y);
         }
+
+        System.out.println("Width " + overlapWidth + " height " + overlapHeight);
     }
 
     public void move(Vector2 deltaPos) {

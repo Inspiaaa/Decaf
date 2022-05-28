@@ -84,13 +84,15 @@ public class CollisionEngine {
     public void moveEntity(RectCollider entity, Vector2 targetPos) {
         removeEntity(entity);
         entity.setPosition(targetPos);
+        // TODO: Call push out of () on each other object in the chunk
         addEntity(entity);
     }
 
     public void moveAndCollideEntity(RectCollider entity, Vector2 targetPos) {
         removeEntity(entity);
 
-        Vector2 deltaPos = targetPos.sub(entity.getPosition());
+        Vector2 startPos = entity.getPosition();
+        Vector2 deltaPos = targetPos.sub(startPos);
 
         Rectangle originalCollider = entity.getMovedCollider();
         Rectangle colliderInTargetPos = originalCollider.copy();
@@ -103,7 +105,7 @@ public class CollisionEngine {
             }
         }
 
-        entity.setPosition(entity.getPosition().add(deltaPos));
+        entity.setPosition(startPos.add(deltaPos));
         addEntity(entity);
     }
 
@@ -112,6 +114,7 @@ public class CollisionEngine {
         Chunk chunk = chunksByPos.get(chunkPos);
         int count = 0;
 
+        // TODO: Move this code to Chunk.java
         if (chunk != null) {
             for (RectCollider entity : chunk.getRawEntities()) {
                 if (entity.getMovedCollider().contains(pos)) {

@@ -71,9 +71,9 @@ public class RectCollider extends Component implements IPositionListener {
 
         isUpdatingPosition = true;
         try {
-            updateMovedCollider();
             transform.setPosition(position);
             this.lastPosition = position;
+            updateMovedCollider();
         }
         finally {
             isUpdatingPosition = false;
