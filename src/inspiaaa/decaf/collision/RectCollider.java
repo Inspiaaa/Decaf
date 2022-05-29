@@ -27,7 +27,7 @@ public class RectCollider extends Component implements IPositionListener {
     }
 
     public RectCollider(Rectangle collider, int layerMask) {
-        this(collider, layerMask, false);
+        this(collider, layerMask, true);
     }
 
     public RectCollider(Rectangle collider, int layerMask, boolean shouldCollideWithOthers) {
