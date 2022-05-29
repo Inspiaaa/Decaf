@@ -13,6 +13,8 @@ public class RectCollider extends Component implements IPositionListener {
     // Base collider
     private Rectangle collider;
     private int layerMask;
+    private boolean shouldCollideWithOthers;
+    // TODO: Maybe add: should others collide with self?
 
     // Collider that has been moved in world space
     private Rectangle movedCollider;
@@ -21,10 +23,19 @@ public class RectCollider extends Component implements IPositionListener {
     private boolean isUpdatingPosition;
 
     public RectCollider(Rectangle collider) {
+        this(collider, LayerMask.DEFAULT);
+    }
+
+    public RectCollider(Rectangle collider, int layerMask) {
+        this(collider, layerMask, false);
+    }
+
+    public RectCollider(Rectangle collider, int layerMask, boolean shouldCollideWithOthers) {
         this.collider = collider;
         this.movedCollider = collider.copy();
         this.isUpdatingPosition = false;
-        this.layerMask = LayerMask.DEFAULT;
+        this.layerMask = layerMask;
+        this.shouldCollideWithOthers = shouldCollideWithOthers;
     }
 
     @Override
@@ -48,22 +59,35 @@ public class RectCollider extends Component implements IPositionListener {
     public void onPositionChange(Vector2 newPos) {
         if (isUpdatingPosition) return;
 
-        // TODO: Call teleportTo() instead
         teleportTo(newPos);
     }
 
     public void teleportTo(Vector2 pos) {
-        collisionEngine.teleportEntity(this, pos);
+        if (shouldCollideWithOthers) {
+            collisionEngine.teleportAndCollideEntity(this, pos);
+        }
+        else {
+            collisionEngine.teleportEntity(this, pos);
+        }
     }
 
     public void moveTo(Vector2 pos) {
-        // TODO: Call moveEntity() instead if this object should not collide
-        collisionEngine.moveAndCollideEntity(this, pos);
+        if (shouldCollideWithOthers) {
+            collisionEngine.moveAndCollideEntity(this, pos);
+        }
+        else {
+            collisionEngine.teleportEntity(this, pos);
+        }
     }
 
     public void moveBy(Vector2 deltaPos) {
-        // TODO: Call moveEntity() instead if this object should not collide
-        collisionEngine.moveAndCollideEntity(this, transform.getPosition().add(deltaPos));
+        Vector2 targetPos = transform.getPosition().add(deltaPos);
+        if (shouldCollideWithOthers) {
+            collisionEngine.moveAndCollideEntity(this, targetPos);
+        }
+        else {
+            collisionEngine.teleportEntity(this, targetPos);
+        }
     }
 
     protected void setPosition(Vector2 position) {
@@ -92,5 +116,9 @@ public class RectCollider extends Component implements IPositionListener {
 
     public Rectangle getMovedCollider() {
         return movedCollider;
+    }
+
+    public int getLayerMask() {
+        return layerMask;
     }
 }

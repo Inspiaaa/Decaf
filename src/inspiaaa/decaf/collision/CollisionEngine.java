@@ -51,11 +51,6 @@ public class CollisionEngine {
         return chunks;
     }
 
-    // TODO: Idea: Make these methods independent of RectCollider (but keep an ease of use overload
-    // for RectCollider)
-
-    // TODO: Respect LayerMask
-
     private Chunk ensureChunkExists(Vector2Int chunkPos) {
         Chunk chunk = chunksByPos.get(chunkPos);
         if (chunk == null) {
@@ -84,6 +79,12 @@ public class CollisionEngine {
     public void teleportEntity(RectCollider entity, Vector2 targetPos) {
         removeEntity(entity);
         entity.setPosition(targetPos);
+        addEntity(entity);
+    }
+
+    public void teleportAndCollideEntity(RectCollider entity, Vector2 targetPos) {
+        removeEntity(entity);
+        entity.setPosition(targetPos);
         resolveCollisions(entity);
         addEntity(entity);
     }
@@ -103,14 +104,13 @@ public class CollisionEngine {
         Vector2 startPos = entity.getPosition();
         Vector2 deltaPos = targetPos.sub(startPos);
 
-        Rectangle originalCollider = entity.getMovedCollider();
-        Rectangle colliderInTargetPos = originalCollider.copy();
+        Rectangle colliderInTargetPos = entity.getMovedCollider().copy();
         colliderInTargetPos.move(deltaPos);
 
         for (Vector2Int chunkPos : getChunksUnderRectangle(colliderInTargetPos)) {
             Chunk chunk = chunksByPos.get(chunkPos);
             if (chunk != null) {
-                deltaPos = chunk.moveAndCollide(originalCollider, deltaPos);
+                deltaPos = chunk.moveAndCollide(entity, deltaPos);
             }
         }
 
@@ -118,7 +118,7 @@ public class CollisionEngine {
         addEntity(entity);
     }
 
-    public int detectCollisions(Vector2 pos, RectCollider[] entities) {
+    public int detectCollisions(Vector2 pos, RectCollider[] entities, int layerMask) {
         if (entities.length == 0) {
             return 0;
         }
@@ -129,16 +129,16 @@ public class CollisionEngine {
             return 0;
         }
 
-        int count = chunk.detectCollisions(pos, entities, 0);
+        int count = chunk.detectCollisions(pos, entities, 0, layerMask);
         return count;
     }
 
-    public int detectCollisions(Rectangle rect, RectCollider[] entities) {
+    public int detectCollisions(Rectangle rect, RectCollider[] entities, int layerMask) {
         int count = 0;
         for (Vector2Int chunkPos : getChunksUnderRectangle(rect)) {
             Chunk chunk = chunksByPos.get(chunkPos);
             if (chunk != null) {
-                count += chunk.detectCollisions(rect, entities, count);
+                count += chunk.detectCollisions(rect, entities, count, layerMask);
             }
         }
         return count;

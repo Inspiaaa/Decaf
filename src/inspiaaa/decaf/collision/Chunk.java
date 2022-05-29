@@ -35,17 +35,20 @@ public class Chunk {
         entities.remove(lastIndex);
     }
 
-    // TODO: Respect LayerMask
-
     // Returns the valid deltaPos for moving the collider.
-    public Vector2 moveAndCollide(Rectangle collider, Vector2 deltaPos) {
+    public Vector2 moveAndCollide(RectCollider entity, Vector2 deltaPos) {
         Vector2 validDeltaPos = deltaPos.copy();
 
+        Rectangle collider = entity.getMovedCollider();
         Rectangle movedCollider = collider.copy();
 
         // This algorithm assumes that its initial state was valid
 
         for (RectCollider other : entities) {
+            if (! LayerMask.containsAnyLayer(other.getLayerMask(), entity.getLayerMask())) {
+                continue;
+            }
+
             // Try to execute the movement. If it does collide, slide along the collider and then calculate
             // a new, valid motion from this collision, which is then used for every next collider.
             movedCollider.setPosition(collider.x, collider.y);
@@ -58,13 +61,32 @@ public class Chunk {
         return validDeltaPos;
     }
 
-    public int detectCollisions(Vector2 pos, RectCollider[] buffer, int offset) {
+    public void resolveCollisions(RectCollider entity) {
+        Rectangle collider = entity.getMovedCollider().copy();
+        Vector2 startPos = collider.getPosition();
+
+        for (RectCollider other : entities) {
+            if (! LayerMask.containsAnyLayer(other.getLayerMask(), entity.getLayerMask())) {
+                continue;
+            }
+            collider.pushOutOf(other.getMovedCollider());
+        }
+
+        Vector2 deltaPos = collider.getPosition().sub(startPos);
+        entity.setPosition(entity.getPosition().add(deltaPos));
+    }
+
+    public int detectCollisions(Vector2 pos, RectCollider[] buffer, int offset, int layerMask) {
         int idx = offset;
         if (idx >= buffer.length) {
             return 0;
         }
 
         for (RectCollider entity : entities) {
+            if (! LayerMask.containsAnyLayer(entity.getLayerMask(), layerMask)) {
+                continue;
+            }
+
             if (entity.getMovedCollider().contains(pos)) {
                 buffer[idx++] = entity;
 
@@ -78,13 +100,17 @@ public class Chunk {
         return count;
     }
 
-    public int detectCollisions(Rectangle rect, RectCollider[] buffer, int offset) {
+    public int detectCollisions(Rectangle rect, RectCollider[] buffer, int offset, int layerMask) {
         int idx = offset;
         if (idx >= buffer.length) {
             return 0;
         }
 
         for (RectCollider entity : entities) {
+            if (! LayerMask.containsAnyLayer(entity.getLayerMask(), layerMask)) {
+                continue;
+            }
+
             if (entity.getMovedCollider().intersects(rect)) {
                 buffer[idx++] = entity;
 
@@ -96,17 +122,5 @@ public class Chunk {
 
         int count = idx - offset;
         return count;
-    }
-
-    public void resolveCollisions(RectCollider entity) {
-        Rectangle collider = entity.getMovedCollider().copy();
-        Vector2 startPos = collider.getPosition();
-
-        for (RectCollider other : entities) {
-            collider.pushOutOf(other.getMovedCollider());
-        }
-
-        Vector2 deltaPos = collider.getPosition().sub(startPos);
-        entity.setPosition(entity.getPosition().add(deltaPos));
     }
 }

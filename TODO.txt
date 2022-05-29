@@ -23,8 +23,9 @@
 - Collision engine
   #- Detect collisions
   #- Resolve collisions
-  - Support layers
+  #- Support layers
   #- Add CollisionEngine to the Scene class
+  - Think about how to handle: shouldCollideWithOthers, shouldOthersCollideWithSelf
 
 #- Rendering with SpriteRenderer
     #- Scaling

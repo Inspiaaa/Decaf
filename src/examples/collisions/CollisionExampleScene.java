@@ -2,6 +2,7 @@ package examples.collisions;
 
 import inspiaaa.decaf.Scene;
 import inspiaaa.decaf.Transform;
+import inspiaaa.decaf.collision.LayerMask;
 import inspiaaa.decaf.collision.RectCollider;
 import inspiaaa.decaf.gameobject.GameObject;
 import inspiaaa.decaf.input.Keyboard;
@@ -41,7 +42,7 @@ public class CollisionExampleScene extends Scene {
 
         Vector2 mousePos = Camera.main().screenToWorldPos(Mouse.getPosition());
         RectCollider[] hits = new RectCollider[5];
-        int count = getCollisionEngine().detectCollisions(mousePos, hits);
+        int count = getCollisionEngine().detectCollisions(mousePos, hits, LayerMask.ALL);
         System.out.println(count + " object(s) under mouse");
 
         super.update();
