@@ -12,19 +12,19 @@ public class RectCollider extends Component implements IPositionListener {
 
     // Base collider
     private Rectangle collider;
-    private Vector2 lastPosition;
+    private int layerMask;
+
     // Collider that has been moved in world space
     private Rectangle movedCollider;
 
-    private int layerMask;
+    private Vector2 lastPosition;
     private boolean isUpdatingPosition;
-
-    // FIXME: Problem: the target position is the same as getPosition()!
 
     public RectCollider(Rectangle collider) {
         this.collider = collider;
         this.movedCollider = collider.copy();
         this.isUpdatingPosition = false;
+        this.layerMask = LayerMask.DEFAULT;
     }
 
     @Override
@@ -41,6 +41,7 @@ public class RectCollider extends Component implements IPositionListener {
     @Override
     public void onDestroy() {
         transform.removePositionListener(this);
+        collisionEngine.removeEntity(this);
     }
 
     @Override
@@ -48,11 +49,11 @@ public class RectCollider extends Component implements IPositionListener {
         if (isUpdatingPosition) return;
 
         // TODO: Call teleportTo() instead
-        moveTo(newPos);
+        teleportTo(newPos);
     }
 
     public void teleportTo(Vector2 pos) {
-        collisionEngine.moveEntity(this, pos);
+        collisionEngine.teleportEntity(this, pos);
     }
 
     public void moveTo(Vector2 pos) {

@@ -58,17 +58,17 @@ public class Chunk {
         return validDeltaPos;
     }
 
-    public int detectCollisions(Vector2 pos, RectCollider[] entities, int offset) {
+    public int detectCollisions(Vector2 pos, RectCollider[] buffer, int offset) {
         int idx = offset;
-        if (idx >= entities.length) {
+        if (idx >= buffer.length) {
             return 0;
         }
 
         for (RectCollider entity : entities) {
             if (entity.getMovedCollider().contains(pos)) {
-                entities[idx++] = entity;
+                buffer[idx++] = entity;
 
-                if (idx >= entities.length) {
+                if (idx >= buffer.length) {
                     break;
                 }
             }
@@ -78,17 +78,17 @@ public class Chunk {
         return count;
     }
 
-    public int detectCollisions(Rectangle rect, RectCollider[] entities, int offset) {
+    public int detectCollisions(Rectangle rect, RectCollider[] buffer, int offset) {
         int idx = offset;
-        if (idx >= entities.length) {
+        if (idx >= buffer.length) {
             return 0;
         }
 
         for (RectCollider entity : entities) {
             if (entity.getMovedCollider().intersects(rect)) {
-                entities[idx++] = entity;
+                buffer[idx++] = entity;
 
-                if (idx >= entities.length) {
+                if (idx >= buffer.length) {
                     break;
                 }
             }
@@ -96,5 +96,17 @@ public class Chunk {
 
         int count = idx - offset;
         return count;
+    }
+
+    public void resolveCollisions(RectCollider entity) {
+        Rectangle collider = entity.getMovedCollider().copy();
+        Vector2 startPos = collider.getPosition();
+
+        for (RectCollider other : entities) {
+            collider.pushOutOf(other.getMovedCollider());
+        }
+
+        Vector2 deltaPos = collider.getPosition().sub(startPos);
+        entity.setPosition(entity.getPosition().add(deltaPos));
     }
 }

@@ -81,11 +81,20 @@ public class CollisionEngine {
         }
     }
 
-    public void moveEntity(RectCollider entity, Vector2 targetPos) {
+    public void teleportEntity(RectCollider entity, Vector2 targetPos) {
         removeEntity(entity);
         entity.setPosition(targetPos);
-        // TODO: Call push out of () on each other object in the chunk
+        resolveCollisions(entity);
         addEntity(entity);
+    }
+
+    public void resolveCollisions(RectCollider entity) {
+        for (Vector2Int chunkPos : getChunksUnderRectangle(entity.getMovedCollider())) {
+            Chunk chunk = chunksByPos.get(chunkPos);
+            if (chunk != null) {
+                chunk.resolveCollisions(entity);
+            }
+        }
     }
 
     public void moveAndCollideEntity(RectCollider entity, Vector2 targetPos) {

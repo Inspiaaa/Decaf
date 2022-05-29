@@ -32,12 +32,16 @@ public class Rectangle {
     }
 
     public void pushOutOf(Rectangle other) {
+        if (! intersects(other)) {
+            return;
+        }
+
         float dxToMoveLeft = -(getRight() - other.getLeft());
         float dxToMoveRight = other.getRight() - getLeft();
         float minDx = Math.abs(dxToMoveLeft) < Math.abs(dxToMoveRight) ? dxToMoveLeft : dxToMoveRight;
 
-        float dyToMoveDown = -(other.getTop() - getBottom());
         float dyToMoveUp = other.getTop() - getBottom();
+        float dyToMoveDown = -(getTop() - other.getBottom());
         float minDy = Math.abs(dyToMoveDown) < Math.abs(dyToMoveUp) ? dyToMoveDown : dyToMoveUp;
 
         if (Math.abs(minDx) < Math.abs(minDy)) {
