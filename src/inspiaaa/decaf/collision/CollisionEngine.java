@@ -110,23 +110,28 @@ public class CollisionEngine {
     }
 
     public int detectCollisions(Vector2 pos, RectCollider[] entities) {
-        Vector2Int chunkPos = pointToChunkPos(pos);
-        Chunk chunk = chunksByPos.get(chunkPos);
-        int count = 0;
-
-        // TODO: Move this code to Chunk.java
-        if (chunk != null) {
-            for (RectCollider entity : chunk.getRawEntities()) {
-                if (entity.getMovedCollider().contains(pos)) {
-                    entities[count++] = entity;
-                }
-            }
+        if (entities.length == 0) {
+            return 0;
         }
 
+        Vector2Int chunkPos = pointToChunkPos(pos);
+        Chunk chunk = chunksByPos.get(chunkPos);
+        if (chunk == null) {
+            return 0;
+        }
+
+        int count = chunk.detectCollisions(pos, entities, 0);
         return count;
     }
 
-    public void detectCollisions(Rectangle rect, RectCollider[] entities) {
-        // TODO
+    public int detectCollisions(Rectangle rect, RectCollider[] entities) {
+        int count = 0;
+        for (Vector2Int chunkPos : getChunksUnderRectangle(rect)) {
+            Chunk chunk = chunksByPos.get(chunkPos);
+            if (chunk != null) {
+                count += chunk.detectCollisions(rect, entities, count);
+            }
+        }
+        return count;
     }
 }

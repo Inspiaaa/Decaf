@@ -21,10 +21,10 @@
   the component for the destroy loop
 
 - Collision engine
-  - Detect collisions
-  - Resolve collisions
+  #- Detect collisions
+  #- Resolve collisions
   - Support layers
-  - Add CollisionEngine to the Scene class
+  #- Add CollisionEngine to the Scene class
 
 #- Rendering with SpriteRenderer
     #- Scaling

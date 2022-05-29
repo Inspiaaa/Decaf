@@ -57,4 +57,44 @@ public class Chunk {
 
         return validDeltaPos;
     }
+
+    public int detectCollisions(Vector2 pos, RectCollider[] entities, int offset) {
+        int idx = offset;
+        if (idx >= entities.length) {
+            return 0;
+        }
+
+        for (RectCollider entity : entities) {
+            if (entity.getMovedCollider().contains(pos)) {
+                entities[idx++] = entity;
+
+                if (idx >= entities.length) {
+                    break;
+                }
+            }
+        }
+
+        int count = idx - offset;
+        return count;
+    }
+
+    public int detectCollisions(Rectangle rect, RectCollider[] entities, int offset) {
+        int idx = offset;
+        if (idx >= entities.length) {
+            return 0;
+        }
+
+        for (RectCollider entity : entities) {
+            if (entity.getMovedCollider().intersects(rect)) {
+                entities[idx++] = entity;
+
+                if (idx >= entities.length) {
+                    break;
+                }
+            }
+        }
+
+        int count = idx - offset;
+        return count;
+    }
 }
