@@ -111,6 +111,11 @@ public class Vector2 {
         return this;
     }
 
+    public void set(Vector2 other) {
+        x = other.x;
+        y = other.y;
+    }
+
     public float angle() {
         return (float)Math.atan2(y, x);
     }

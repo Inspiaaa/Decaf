@@ -35,6 +35,9 @@ public class Scene implements IScene {
     private final HashSet<IDrawable> objectsToDraw;
     private final ObjectPool<IDestroyable> objectsToDestroy;
 
+    // Cached array for sorting the objectsToDraw (to avoid unnecessary GC alloc on each draw call)
+    private IDrawable[] objectsToDrawSortedByDepth = new IDrawable[0];
+
     public Scene() {
         this.objectsToUpdate = new ObjectPool<IUpdatable>();
         this.objectsToDraw = new HashSet<IDrawable>();
@@ -93,8 +96,14 @@ public class Scene implements IScene {
     private void dispatchOnDraw() {
         // Sorts the objects so that the objects with the highest sorting order are drawn on top
         // of objects with a lower sorting order.
-        IDrawable[] objectsToDrawSortedByDepth = objectsToDraw.toArray(new IDrawable[objectsToDraw.size()]);
-        Arrays.sort(objectsToDrawSortedByDepth, new Comparator<IDrawable>() {
+
+        // Reduce the size of the array when it goes below a certain threshold of items (3/4 empty)
+        if (objectsToDrawSortedByDepth.length > objectsToDraw.size() * 4) {
+            objectsToDrawSortedByDepth = new IDrawable[objectsToDraw.size()];
+        }
+
+        objectsToDrawSortedByDepth = objectsToDraw.toArray(objectsToDrawSortedByDepth);
+        Arrays.sort(objectsToDrawSortedByDepth, 0, objectsToDraw.size(), new Comparator<IDrawable>() {
             @Override
             public int compare(IDrawable a, IDrawable b) {
                 return Integer.compare(a.getSortingOrder(), b.getSortingOrder());

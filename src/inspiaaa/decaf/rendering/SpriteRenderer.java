@@ -12,6 +12,9 @@ public class SpriteRenderer extends Component implements IDrawable {
     private int sortingOrder;
     private Transform transform;
 
+    // Cached Vector instance for the onDraw() method to reduce GC
+    private Vector2 scaleForDrawingOnScreen = new Vector2();
+
     public SpriteRenderer(Sprite sprite) {
         this(sprite, 0);
     }
@@ -40,16 +43,19 @@ public class SpriteRenderer extends Component implements IDrawable {
         // the correct amount of pixels on the screen.
         float scalingFactorForWidth = pixelsPerUnit / sprite.getPixelsPerUnit();
 
-        Vector2 scale = transform.getScale().mul(scalingFactorForWidth);
+        scaleForDrawingOnScreen.set(transform.getScale());
+        scaleForDrawingOnScreen.muli(scalingFactorForWidth);
         float rotation = transform.getRotation();
+        
         GraphicsHelper.drawImageWithScaleRotationOrigin(
                 g,
                 sprite.getTexture(),
                 xInPixels,
                 yInPixels,
-                scale,
+                scaleForDrawingOnScreen,
                 rotation,
-                sprite.getOrigin());
+                sprite.getOrigin()
+        );
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class GraphicsHelper {
     public static final AffineTransform IDENTITY_TX = new AffineTransform();
+    private static final AffineTransform cachedTransform = new AffineTransform();
 
     public static void fill(BufferedImage image, Color color) {
         Graphics2D g = (Graphics2D)image.getGraphics();
@@ -53,7 +54,9 @@ public class GraphicsHelper {
         g.drawImage(image, (int)x, (int)y, null);
     }
 
-    // Draws an image that is scaled and rotated around its origin
+    // Draws an image that is scaled and rotated around its origin.
+    // This overload reuses an internal AffineTransform instance and thus should not be used by
+    // multiple threads.
     public static void drawImageWithScaleRotationOrigin(
             Graphics2D g,
             BufferedImage image,
@@ -63,7 +66,31 @@ public class GraphicsHelper {
             float rotation,
             Vector2 origin) {
 
-        AffineTransform tx = new AffineTransform();
+        drawImageWithScaleRotationOrigin(
+                g,
+                image,
+                x,
+                y,
+                scale,
+                rotation,
+                origin,
+                cachedTransform
+        );
+    }
+
+    // Draws an image that is scaled and rotated around its origin.
+    // Allows you to pass an AffineTransform in (instead of it automatically reusing an AffineTransform instance).
+    public static void drawImageWithScaleRotationOrigin(
+            Graphics2D g,
+            BufferedImage image,
+            float x,
+            float y,
+            Vector2 scale,
+            float rotation,
+            Vector2 origin,
+            AffineTransform tx) {
+
+        tx.setToIdentity();
 
         int width = image.getWidth();
         int height = image.getHeight();
