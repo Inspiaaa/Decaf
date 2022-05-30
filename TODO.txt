@@ -99,3 +99,5 @@
 - 2d light system (alpha based masks without shadows)
 
 - Improve formatting: Add space when casting (int)x => (int) x
+
+- For scene: create an empty method create() that is meant to be overridden instead of using start()

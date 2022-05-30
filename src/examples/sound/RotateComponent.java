@@ -5,7 +5,7 @@ import inspiaaa.decaf.Transform;
 import inspiaaa.decaf.gameobject.Component;
 import inspiaaa.decaf.events.IUpdatable;
 
-public class ExampleComponent extends Component implements IUpdatable {
+public class RotateComponent extends Component implements IUpdatable {
     private Transform transform;
 
     @Override

@@ -1,6 +1,5 @@
 package examples.sound;
 
-import examples.sound.ExampleComponent;
 import inspiaaa.decaf.Scene;
 import inspiaaa.decaf.Time;
 import inspiaaa.decaf.Transform;
@@ -18,7 +17,7 @@ import inspiaaa.decaf.sound.SoundEffect;
 import inspiaaa.decaf.sound.SoundEffectInstance;
 import inspiaaa.decaf.sound.SpatialAudio;
 
-public class ExampleScene extends Scene {
+public class SpatialSoundScene extends Scene {
     private Music music;
     private Sprite sprite = new Sprite("./Player.png", 16, Sprite.ORIGIN_BOTTOM_CENTER);
 
@@ -32,7 +31,7 @@ public class ExampleScene extends Scene {
         GameObject go = new GameObject();
         go.addComponent(new Transform(new Vector2(1, 2)));
         go.addComponent(new SpriteRenderer(sprite));
-        go.addComponent(new ExampleComponent());
+        go.addComponent(new RotateComponent());
 
 //        for (int i = 0; i < 20; i ++) {
 //            GameObject g = new GameObject();
@@ -57,7 +56,7 @@ public class ExampleScene extends Scene {
             Vector2 pos = new Vector2(Random.range(-5f, 5f), Random.range(-5f, 5f));
             g.addComponent(new Transform(pos));
             g.addComponent(new SpriteRenderer(sprite));
-            g.addComponent(new ExampleComponent());
+            g.addComponent(new RotateComponent());
 
             SoundEffect sfx = new SoundEffect("Shield Metal 2_5.wav");
             sfx.setMasterVolume(1);
