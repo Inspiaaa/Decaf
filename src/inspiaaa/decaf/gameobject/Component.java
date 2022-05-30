@@ -1,14 +1,16 @@
 package inspiaaa.decaf.gameobject;
 
 import inspiaaa.decaf.Scene;
+import inspiaaa.decaf.events.IDestroyable;
 
-public class Component {
+public class Component implements IDestroyable {
     protected GameObject gameObject;
 
     public void onStart() {
 
     }
 
+    @Override
     public void onDestroy() {
 
     }

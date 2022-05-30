@@ -1,6 +1,7 @@
 package inspiaaa.decaf;
 
 import inspiaaa.decaf.collision.CollisionEngine;
+import inspiaaa.decaf.events.IDestroyable;
 import inspiaaa.decaf.events.IDrawable;
 import inspiaaa.decaf.events.IUpdatable;
 import inspiaaa.decaf.input.Keyboard;
@@ -32,10 +33,12 @@ public class Scene implements IScene {
     // which is similar to a HashSet, but allows for mutations during iteration.
     private final ObjectPool<IUpdatable> objectsToUpdate;
     private final HashSet<IDrawable> objectsToDraw;
+    private final ObjectPool<IDestroyable> objectsToDestroy;
 
     public Scene() {
         this.objectsToUpdate = new ObjectPool<IUpdatable>();
         this.objectsToDraw = new HashSet<IDrawable>();
+        this.objectsToDestroy = new ObjectPool<IDestroyable>();
         this.collisionEngine = new CollisionEngine(collisionEngineChunkSize);
 
         this.backgroundColor = Color.WHITE;
@@ -68,6 +71,7 @@ public class Scene implements IScene {
 
         dispatchOnUpdate();
         dispatchOnDraw();
+        dispatchOnDestroy();
 
         worldCamera.renderToScreen(screen);
         uiCamera.renderToScreen(screen);
@@ -105,6 +109,20 @@ public class Scene implements IScene {
         }
     }
 
+    private void dispatchOnDestroy() {
+        objectsToDestroy.lock();
+        for (IDestroyable obj : objectsToDestroy) {
+            try {
+                obj.onDestroy();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        objectsToDestroy.unlock();
+        objectsToDestroy.clear();
+    }
+
     @Override
     public void destroy() {
 
@@ -125,6 +143,14 @@ public class Scene implements IScene {
     public void unregister(Object obj) {
         if (obj instanceof IUpdatable) objectsToUpdate.remove((IUpdatable)obj);
         if (obj instanceof IDrawable) objectsToDraw.remove((IDrawable)obj);
+    }
+
+    public void registerForDestroy(IDestroyable obj) {
+        objectsToDestroy.add(obj);
+    }
+
+    public void unregisterForDestroy(IDestroyable obj) {
+        objectsToDestroy.remove(obj);
     }
 
     public CollisionEngine getCollisionEngine() {

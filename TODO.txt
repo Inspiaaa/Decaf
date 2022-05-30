@@ -17,8 +17,9 @@
 #- Make GamePanel the scene manager (handle the events properly + add methods for setting the scene)
 
 - Call start (component) at the beginning of the next frame and not directly
-- Call onDestroy after onUpdate / onDraw / ... => Make Component an IDestroyable and in GameObject register
-  the component for the destroy loop
+#- Call onDestroy after onUpdate / onDraw / ... => Make Component an IDestroyable and in GameObject register
+   the component for the destroy loop
+- Add methods to get and to query all objects in the scene
 
 - Collision engine
   #- Detect collisions
@@ -50,7 +51,7 @@
     - Add close methods for Music, SoundEffect and SoundEffectInstance
     - Add pan to Music
 
-- Graphics Helper for drawing images
+#- Graphics Helper for drawing images
 
 #- Time (.deltaTime, .time, ...)
 
@@ -92,6 +93,8 @@
 - Optimise imports
 
 - Optimise rendering pipeline (less intermediate images)
+
+- Reduce GC lag spikes due to unnecessary allocations (AffineTransform, Vector2, Rectangle, ...)
 
 - 2d light system (alpha based masks without shadows)
 

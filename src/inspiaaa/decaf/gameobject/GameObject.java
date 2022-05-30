@@ -27,6 +27,7 @@ public class GameObject {
 
         components.add(component);
         scene.register(component);
+        scene.unregisterForDestroy(component);
     }
 
     public Component getComponent(Class<? extends Component> c) {
@@ -63,7 +64,7 @@ public class GameObject {
 
     // Destroys a component, i.e. unregisters it from the event loop, ...
     private void destroyComponent(Component component) {
-        component.onDestroy();
+        scene.registerForDestroy(component);
         scene.unregister(component);
     }
 
