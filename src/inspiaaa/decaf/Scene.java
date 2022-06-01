@@ -110,7 +110,9 @@ public class Scene implements IScene {
             }
         });
 
-        for (IDrawable obj : objectsToDrawSortedByDepth) {
+        int count = objectsToDraw.size();
+        for (int i = 0; i < count; i++) {
+            IDrawable obj = objectsToDrawSortedByDepth[i];
             try {
                 obj.onDraw();
             }
