@@ -174,4 +174,9 @@ public class Vector2 {
         t = (t > 1) ? 1 : ((t < 0) ? 0 : t);
         return new Vector2((end.x - start.x) * t + start.x, (end.y - start.y) * t + start.y);
     }
+
+    public static Vector2 moveTowards(Vector2 start, Vector2 end, float maxDistance) {
+        float t = maxDistance / distance(start, end);
+        return lerp(start, end, t);
+    }
 }
