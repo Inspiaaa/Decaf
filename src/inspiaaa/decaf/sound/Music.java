@@ -108,5 +108,11 @@ public class Music implements Runnable {
         gainControl.setValue(20 * (float)Math.log10(volume));
     }
 
-    // TODO: Add pan
+    // pan = -1 => Left
+    // pan =  0 => Normal
+    // pan =  1 => Right
+    public void setPan(float pan) {
+        FloatControl panControl = (FloatControl) soundLine.getControl(FloatControl.Type.PAN);
+        panControl.setValue(pan);
+    }
 }

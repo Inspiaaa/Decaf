@@ -49,7 +49,7 @@
     (https://docs.oracle.com/javase/8/docs/technotes/guides/sound/programmer_guide/chapter4.html)
     #- 3D Sound System (pan and volume)
     - Add close methods for Music, SoundEffect and SoundEffectInstance
-    - Add pan to Music
+    #- Add pan to Music
 
 #- Graphics Helper for drawing images
 
